@@ -15,3 +15,7 @@ class Questions(models.Model):
         if self.correct_answer not in self.answers:
             raise ValueError("Correct answer must be one of the provided answers.")
         super().save(*args, **kwargs)
+
+    # Returned a String for validation
+    def _str_(self):
+        return self.question
