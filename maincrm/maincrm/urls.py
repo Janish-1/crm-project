@@ -20,6 +20,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # Added link to urls
+    # Added link to urls in authentication app
     path('',include('authentication.urls'))
 ]
