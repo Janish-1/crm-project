@@ -14,4 +14,6 @@ router.register(r'testquestions',views.QuestionsView,'testquestions')
 urlpatterns = [
     # This creates a api for the routes
     path('api/',include(router.urls)),
+    # Another way of calling api
+    path('hello-world/',views.hello_world,name='hello_world'),
 ]
