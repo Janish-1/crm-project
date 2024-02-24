@@ -21,5 +21,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     # Added link to urls in authentication app
-    path('',include('authentication.urls'))
+    path('',include('authentication.urls')),
+    path('',include('test_for_users.urls')),
 ]
