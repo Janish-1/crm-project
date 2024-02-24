@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Authentication app - Created by Me
     'authentication',
+    # Adding Cors and Rest Framework with API's
+    'corsheaders',
+    'rest_framework',
+    # Adding the tests for users
+    'test_for_users',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Adding Cors Middleware
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'maincrm.urls'
@@ -124,3 +131,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Adding Cors Whitelist
+CORS_ORIGIN_WHITELIST = [
+     'http://localhost:3000'
+]

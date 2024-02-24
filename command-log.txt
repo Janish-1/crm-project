@@ -3,3 +3,5 @@ source .venv/bin/activate
 pip install django
 django-admin startproject maincrm
 python3 manage.py startapp authentication
+python manage.py createsuperuser
+python manage.py startapp test_for_users
