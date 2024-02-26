@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 # Importing viewsets from rest_framework
 from rest_framework import viewsets
 # Linking Serializers and Questions Models
@@ -13,6 +13,12 @@ import string
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.core.files import File
+import logging
+import json
+
+# Configure the logger
+logging.basicConfig(level=logging.ERROR)  # Set the logging level to ERROR or another desired level
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -229,71 +235,81 @@ def open_quiz(request, category, testid):
 
     questions_data = [{'id': q.id, 'question': q.question, 'answers': q.answers, 'category': q.category} for q in questions]
 
-    return render(request, 'quizpage.php', {'questions':questions_data, 'category': category, 'testid': testid})
+    return render(request, 'quizpage.html', {'questions':questions_data, 'category': category, 'testid': testid})
 
 @api_view(['POST'])
-def submit_quiz(request, category):
+def submit_quiz(request):
     try:
-        answers = request.data.get('answers', [])
-        testid = request.data.get('testid', '')
+        data = json.loads(request.body.decode('utf-8'))
+        
+        answers = data.get('answers')
+        testid = data.get('testid')
+        category = data.get('category')
+
+        print("Data", answers, testid, category)
 
         total_questions = len(answers)
         correct_count = 0
 
-        for answer in answers:
-            question_id, user_answer = map(int, answer.split(':'))
+        for answer_data in answers:
+            answer_text = answer_data.get('answer')
+            question_id = int(answer_data.get('questionId'))
+
             question = Questions.objects.get(id=question_id)
 
-            if user_answer == question.correct_answer:
+            if answer_text == question.correct_answer:
                 correct_count += 1
 
         percentage_correct = (correct_count / total_questions) * 100 if total_questions > 0 else 0
 
-        test = Career.objects.filter(category=category, testid=testid).first()
+        test = Careers.objects.filter(category=category, testid=testid).first()
 
         if percentage_correct >= 75:
             test.teststatus = 'pass'
             test.save()
-            return Response({'success': True, 'message': 'Quiz submitted successfully', 'result': 'pass'}, status=status.HTTP_200_OK)
+            return redirect('passpage.html')  # Redirect to pass page
         else:
             test.teststatus = 'fail'
             test.save()
-            return Response({'success': True, 'message': 'Quiz submitted successfully', 'result': 'fail'}, status=status.HTTP_200_OK)
+            return redirect('failpage.html')  # Redirect to fail page
     except Exception as e:
-        return Response({'success': False, 'message': 'An error occurred during the quiz submission.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # Log the exception for debugging purposes
+        logger.error("An error occurred during the quiz submission: %s" % str(e))
+        return Response({
+            'success': False,
+            'message': 'An error occurred during the quiz submission.',
+            'error_details': str(e)  # Include additional error details in the response
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
-def pass_function(request, category):
-    testid = request.data.get('testid', '')
+def fail_testee(request):
+    try:
+        testid = request.data.get('testid')
 
-    test = Careers.objects.filter(category=category, testid=testid).first()
+        print("TestId:", testid)
 
-    if test and test.teststatus == 'pending':
-        test.teststatus = 'pass'
-        test.save()
+        test = Careers.objects.filter(testid=testid).first()
 
-    return Response({'success': True, 'message': 'Quiz result updated to pass'}, status=status.HTTP_200_OK)
+        if test and test.teststatus == 'pending':
+            test.teststatus = 'fail'
+            test.save()
 
-@api_view(['POST'])
-def fail_function(request, category):
-    testid = request.data.get('testid', '')
-
-    test = Careers.objects.filter(category=category, testid=testid).first()
-
-    if test and test.teststatus == 'pending':
-        test.teststatus = 'fail'
-        test.save()
-
-    return Response({'success': True, 'message': 'Quiz result updated to fail'}, status=status.HTTP_200_OK)
+        # Include the redirect URL in the response
+        redirect_url = 'failpage'
+        return Response({'success': True, 'message': 'Failed Successully.','redirect_url':redirect_url},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except Exception as e:
+        # Log the exception for debugging purposes
+        logger.error("An error occurred during the quiz submission: %s" % str(e))
+        return Response({'success': False, 'message': 'An error occurred while updating the quiz result to fail.', 'error_details': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def passpage(request):
-    return render('passpage')
+    return render(request, 'passpage.html')
 
 @api_view(['GET'])
 def failpage(request):
-    return render('failpage')
+    return render(request, 'failpage.html')
 
 @api_view(['GET'])
 def errorpage(request):
-    return render('errorpage')
+    return render(request, 'errorpage.html')

@@ -29,10 +29,9 @@ urlpatterns = [
 
     # Quiz Paths
     path('quiz/<str:category>/<str:testid>/',views.open_quiz,name='quiz'),
-    path('submit-quiz/{category}/{testid}',views.submit_quiz,name='submitquiz'),
-    path('pass/{category}/{testid}',views.pass_function,name='passfunction'),
-    path('fail/{category}/{testid}',views.fail_function,name='failfunction'),
-    path('error',views.errorpage,name='errorpage'),
-    path('passpage',views.passpage,name='passpage'),
-    path('failpage',views.failpage,name='failpage'),
+    path('submit-quiz/',views.submit_quiz,name='submitquiz'),
+    path('pass/',views.passpage,name='passfunction'),
+    path('failpage/',views.failpage,name='failpage'),
+    path('fail/',views.fail_testee,name='failfunction'),
+    path('error/',views.errorpage,name='error-page'),
 ]
