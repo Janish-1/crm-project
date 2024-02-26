@@ -322,4 +322,4 @@ def failpage(request):
 
 @api_view(['GET'])
 def errorpage(request):
-    return render(request, 'errorpage.html')
+    return render(request, 'error.html')
