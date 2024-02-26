@@ -176,37 +176,37 @@
             }
         });
 
-        // var countdown = 600; // 10 minutes in seconds
-        // var timer = setInterval(function () {
-        //     countdown--;
+        var countdown = 600; // 10 minutes in seconds
+        var timer = setInterval(function () {
+            countdown--;
 
-        //     if (countdown <= 0) {
-        //         clearInterval(timer);
-        //         failTestee(); // Redirect to the fail path when the timer reaches zero
-        //     }
+            if (countdown <= 0) {
+                clearInterval(timer);
+                failTestee(); // Redirect to the fail path when the timer reaches zero
+            }
 
-        //     updateTimerDisplay();
-        // }, 1000);
+            updateTimerDisplay();
+        }, 1000);
 
-        // // Listen for page visibility change events
-        // document.addEventListener('visibilitychange', function () {
-        //     if (document.hidden) {
-        //         failTestee(); // Redirect to the fail path when the page is hidden
-        //     }
-        // });
+        // Listen for page visibility change events
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                failTestee(); // Redirect to the fail path when the page is hidden
+            }
+        });
 
         // Attach a click event to the submit button
         document.getElementById('submit-button').addEventListener('click', function () {
             submitQuiz();  // Pass the category value
         });
 
-        // // Warn the user before leaving or reloading the page
-        // window.addEventListener('beforeunload', function (e) {
-        //     var confirmationMessage = 'Are you sure you want to leave? Your test progress will be lost.';
+        // Warn the user before leaving or reloading the page
+        window.addEventListener('beforeunload', function (e) {
+            var confirmationMessage = 'Are you sure you want to leave? Your test progress will be lost.';
 
-        //     (e || window.event).returnValue = confirmationMessage; // Standard
-        //     return confirmationMessage; // For some older browsers
-        // });
+            (e || window.event).returnValue = confirmationMessage; // Standard
+            return confirmationMessage; // For some older browsers
+        });
 
         function updateTimerDisplay() {
             var minutes = Math.floor(countdown / 60);
@@ -263,6 +263,7 @@
                     if (data.success) {
                         // Handle success and redirect to the specified URL
                         console.log('Redirecting to:', data.redirect_url);
+                        window.location.href = data.redirect_url;  // Redirect to the pass or fail page
                     } else {
                         // Handle other cases of the response
                         // ...

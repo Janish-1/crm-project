@@ -15,6 +15,7 @@ from django.http import JsonResponse
 from django.core.files import File
 import logging
 import json
+from django.urls import reverse
 
 # Configure the logger
 logging.basicConfig(level=logging.ERROR)  # Set the logging level to ERROR or another desired level
@@ -267,11 +268,20 @@ def submit_quiz(request):
         if percentage_correct >= 75:
             test.teststatus = 'pass'
             test.save()
-            return redirect('passpage.html')  # Redirect to pass page
+            return Response({
+                'success': True,
+                'message': 'Quiz submitted successfully.',
+                'redirect_url': reverse('passpage')  # Get the URL using the Django reverse function
+            })
         else:
             test.teststatus = 'fail'
             test.save()
-            return redirect('failpage.html')  # Redirect to fail page
+        return Response({
+            'success': True,
+            'message': 'Quiz submission failed. Redirecting to failpage...',
+            'redirect_url': reverse('failpage')  # Get the URL using the Django reverse function
+            })
+
     except Exception as e:
         # Log the exception for debugging purposes
         logger.error("An error occurred during the quiz submission: %s" % str(e))
