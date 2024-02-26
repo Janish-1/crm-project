@@ -185,4 +185,115 @@ def redirect_to_test(request):
 
     # Return a 200 response with a success message and the test ID
     return Response({'success': True, 'message': 'Successfully redirected to test page', 'testid': testid,
-                     'redirectUrl': f"http://127.0.0.1:8000/quiz/{category}/{testid}"}, status=status.HTTP_200_OK)
+                     'redirectUrl': f"http://127.0.0.1:8000/api/quiz/{category}/{testid}"}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def open_quiz(request, category, testid):
+    if not testid:
+        return Response({'success': False, 'message': "No TestID"}, status=status.HTTP_400_BAD_REQUEST)
+
+    check_if_done = Careers.objects.filter(testid=testid, teststatus='pending').first()
+
+    if not check_if_done:
+        return Response({'success': False, 'message': "Test Already Done"}, status=status.HTTP_400_BAD_REQUEST)
+
+    categories = {
+        'SeniorFullStack5PlusYears': ['PHP', 'Angular', 'MySQL', 'API'],
+        'SeniorUnityGameDeveloper': ['Unity Developer'],
+        'GameDesigner': ['Photoshop', 'Elastic', 'Figma'],
+        'BackendGameDeveloper': ['MEAN'],
+        'SalesAssociate(Telecaller)': ['Sales', 'Telecaller'],
+        'SalesTeamLead': ['Sales', 'SalesTeamLead'],
+        'SalesManager': ['Sales', 'SalesManager'],
+        'IonicDeveloper': ['IonicDeveloper', 'Angular', 'React'],
+        'SeniorReactNativeDeveloper': ['React Native', 'JavaScript'],
+        'DigitalMarketingAssistant': ['Digital Marketing'],
+        'GraphicDesigner': ['Graphic Design'],
+        'DevOps': ['DevOps'],
+        'QualityAssurance': ['Manual Testing', 'Quality Assurance'],
+    }
+
+    if category not in categories:
+        return Response({'success': False, 'message': f"Invalid Category: {category}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    questions = []
+
+    questions_per_category = 15 // len(categories[category])
+
+    for individual_category in categories[category]:
+        individual_questions = Questions.objects.filter(category=individual_category).order_by('?')[:questions_per_category]
+        questions.extend(individual_questions)
+
+    if not questions:
+        return Response({'success': False, 'message': f"No Questions Available for {category}"}, status=status.HTTP_400_BAD_REQUEST)
+
+    questions_data = [{'id': q.id, 'question': q.question, 'answers': q.answers, 'category': q.category} for q in questions]
+
+    return render(request, 'quizpage.php', {'questions':questions_data, 'category': category, 'testid': testid})
+
+@api_view(['POST'])
+def submit_quiz(request, category):
+    try:
+        answers = request.data.get('answers', [])
+        testid = request.data.get('testid', '')
+
+        total_questions = len(answers)
+        correct_count = 0
+
+        for answer in answers:
+            question_id, user_answer = map(int, answer.split(':'))
+            question = Questions.objects.get(id=question_id)
+
+            if user_answer == question.correct_answer:
+                correct_count += 1
+
+        percentage_correct = (correct_count / total_questions) * 100 if total_questions > 0 else 0
+
+        test = Career.objects.filter(category=category, testid=testid).first()
+
+        if percentage_correct >= 75:
+            test.teststatus = 'pass'
+            test.save()
+            return Response({'success': True, 'message': 'Quiz submitted successfully', 'result': 'pass'}, status=status.HTTP_200_OK)
+        else:
+            test.teststatus = 'fail'
+            test.save()
+            return Response({'success': True, 'message': 'Quiz submitted successfully', 'result': 'fail'}, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'success': False, 'message': 'An error occurred during the quiz submission.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def pass_function(request, category):
+    testid = request.data.get('testid', '')
+
+    test = Careers.objects.filter(category=category, testid=testid).first()
+
+    if test and test.teststatus == 'pending':
+        test.teststatus = 'pass'
+        test.save()
+
+    return Response({'success': True, 'message': 'Quiz result updated to pass'}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def fail_function(request, category):
+    testid = request.data.get('testid', '')
+
+    test = Careers.objects.filter(category=category, testid=testid).first()
+
+    if test and test.teststatus == 'pending':
+        test.teststatus = 'fail'
+        test.save()
+
+    return Response({'success': True, 'message': 'Quiz result updated to fail'}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def passpage(request):
+    return render('passpage')
+
+@api_view(['GET'])
+def failpage(request):
+    return render('failpage')
+
+@api_view(['GET'])
+def errorpage(request):
+    return render('errorpage')

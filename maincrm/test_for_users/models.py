@@ -7,7 +7,7 @@ class Questions(models.Model):
     answers = models.JSONField()
     correct_answer = models.TextField()
     category = models.TextField()
-    difficulty = models.TextField()
+    difficulty = models.TextField(default='null')
 
     # Save validation
     def save(self, *args, **kwargs):
