@@ -25,16 +25,12 @@ class Careers(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.TextField()
     mail = models.EmailField()
-    contactnumber = models.IntegerField()
+    contactnumber = models.BigIntegerField()
     category = models.TextField()
     experience = models.IntegerField()
-    cv = models.FileField()
+    # Upload to CV Files
+    cv = models.FileField(upload_to='cv_files/')
     status = models.TextField(default="pending")
-    appliedto = models.TextField()
+    appliedto = models.TextField(default="RAMO")
     teststatus = models.TextField(default="pending")
     testid = models.TextField(unique=True)
-
-    def save(self, *args, **kwargs):
-        if len(self.contactnumber) != 10:
-            raise ValueError("Contact Number is not correct")
-        super().save(*args,**kwargs) 

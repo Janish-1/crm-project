@@ -23,7 +23,7 @@ urlpatterns = [
     # Added link to urls in authentication app
     path('',include('authentication.urls')),
     # Added link for calling api using router
-    path('',include('test_for_users.urls')),
+    # path('',include('test_for_users.urls')),
     # Added link for callin api with normal routes
     path('api/',include('test_for_users.urls')),
 ]

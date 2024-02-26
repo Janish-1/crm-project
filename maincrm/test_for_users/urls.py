@@ -16,4 +16,5 @@ urlpatterns = [
     path('api/',include(router.urls)),
     # Another way of calling api
     path('hello-world/',views.hello_world,name='hello_world'),
+    path('createcareer',views.create_career,name='createcareer'),
 ]

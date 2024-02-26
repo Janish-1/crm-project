@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 # Linking Serializers and Questions Models
 from .serializers import QuestionsSerializer
-from .models import Questions,Career
+from .models import Questions,Careers
 # Importing apiview and Response from rest framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -12,6 +12,7 @@ import random
 import string
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
+from django.core.files import File
 
 # Create your views here.
 
@@ -45,7 +46,7 @@ def create_career(request):
     testid = random_strings(200)
 
     # Create a new Career model instance
-    career = Career(
+    career = Careers(
         name=request.data['name'],
         mail=request.data['mail'],
         contactnumber=request.data['contactnumber'],
@@ -54,6 +55,10 @@ def create_career(request):
         cv=cv_path,
         testid=testid,
     )
+
+    cv_file = request.data.get('cv')
+    if cv_file:
+        career.cv.save(cv_file.name,File(cv_file))
 
     # Save the Career model instance to the database
     career.save()
@@ -72,7 +77,7 @@ def create_career(request):
 @api_view(['GET'])
 def read_career(request, id):
     try:
-        career = Career.objects.get(id=id)
+        career = Careers.objects.get(id=id)
         return Response({'success': True, 'career': {
             'id': career.id,
             'name': career.name,
@@ -96,7 +101,7 @@ def update_career(request, id):
 
     # Find the Career model instance by ID
     try:
-        career = Career.objects.get(id=id)
+        career = Careers.objects.get(id=id)
     except ObjectDoesNotExist:
         return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -130,7 +135,7 @@ def update_career(request, id):
 def delete_career(request, id):
     # Find the Career model instance by ID
     try:
-        career = Career.objects.get(id=id)
+        career = Careers.objects.get(id=id)
     except ObjectDoesNotExist:
         return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -146,7 +151,7 @@ def delete_career(request, id):
 @api_view(['GET'])
 def read_all_careers(request):
     # Retrieve all career entries
-    careers = Career.objects.all()
+    careers = Careers.objects.all()
 
     # Transform the data for response
     careers_data = [{
@@ -173,7 +178,7 @@ def redirect_to_test(request):
 
     # Check if the test ID exists and the status is pending in the careers database
     try:
-        career = Career.objects.get(testid=testid, teststatus='pending')
+        career = Careers.objects.get(testid=testid, teststatus='pending')
         category = career.category
     except ObjectDoesNotExist:
         return Response({'success': False, 'message': 'Invalid test ID or test status is not pending'}, status=status.HTTP_400_BAD_REQUEST)
