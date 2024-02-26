@@ -19,3 +19,22 @@ class Questions(models.Model):
     # Returned a String for validation
     def _str_(self):
         return self.question
+
+# Creating the careers models for the career database
+class Careers(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.TextField()
+    mail = models.EmailField()
+    contactnumber = models.IntegerField()
+    category = models.TextField()
+    experience = models.IntegerField()
+    cv = models.FileField()
+    status = models.TextField(default="pending")
+    appliedto = models.TextField()
+    teststatus = models.TextField(default="pending")
+    testid = models.TextField(unique=True)
+
+    def save(self, *args, **kwargs):
+        if len(self.contactnumber) != 10:
+            raise ValueError("Contact Number is not correct")
+        super().save(*args,**kwargs) 
