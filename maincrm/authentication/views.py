@@ -7,7 +7,7 @@ from .forms import UserCreationForm, LoginForm
 # Home page
 def index(request):
     # Rendering index.html file on path
-    return render(request, 'index.html')
+    return render(request, 'index.php')
 
 # signup page
 def user_signup(request):
@@ -21,7 +21,7 @@ def user_signup(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.php', {'form': form})
 
 # login page
 def user_login(request):
@@ -41,7 +41,7 @@ def user_login(request):
                 return redirect('home')
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.php', {'form': form})
 
 # logout page
 def user_logout(request):

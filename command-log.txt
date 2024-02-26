@@ -7,4 +7,3 @@ python manage.py createsuperuser
 python manage.py startapp test_for_users
 python manage.py makemigrations
 python manage.py migrate
-npx create-react-app frontend
