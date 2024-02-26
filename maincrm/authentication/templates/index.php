@@ -509,12 +509,12 @@
         </a>
         <ul id="recruitment-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="jobs-posted.php">
               <i class="bi bi-circle"></i><span>Jobs Posted</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="jobs-application.php">
               <i class="bi bi-circle"></i><span>Jobs Application</span>
             </a>
           </li>
