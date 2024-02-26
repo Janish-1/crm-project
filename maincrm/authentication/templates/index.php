@@ -514,7 +514,7 @@
             </a>
           </li>
           <li>
-            <a href="jobs-application.php">
+            <a href="alljobsapplications">
               <i class="bi bi-circle"></i><span>Jobs Application</span>
             </a>
           </li>

@@ -26,4 +26,5 @@ urlpatterns = [
     # path('',include('test_for_users.urls')),
     # Added link for callin api with normal routes
     path('api/',include('test_for_users.urls')),
+    path('',include('crm_module_1')),
 ]
