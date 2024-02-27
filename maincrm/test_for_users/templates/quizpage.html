@@ -65,6 +65,7 @@
 
                             <div class="quiz-app card mb-3">
                                 <form id="quiz-form" method="POST">
+                                    {% csrf_token %}
                                     <div class="quiz-info">
                                         <div class="category">Category: <span>{{ category }}</span> <span>
                                                 <div id="timer" class="timer"></div>
@@ -242,11 +243,15 @@
                 answers: selectedAnswers
             };
 
-            // Use fetch to make a POST request
+            // Get the CSRF token from the cookie
+            var csrftoken = getCookie('csrftoken');
+
+            // Use fetch to make a POST request with the CSRF token in the headers
             fetch('/api/submit-quiz/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
                 },
                 body: JSON.stringify(formData)
             })
@@ -287,11 +292,15 @@
                 testid: testid
             };
 
+            // Get the CSRF token from the cookie
+            var csrftoken = getCookie('csrftoken');
+
             // Use fetch to make a POST request
             fetch('/api/fail/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
                 },
                 body: JSON.stringify(formData)
             })
@@ -313,6 +322,22 @@
                     console.error('Fail Testee Error:', error);
                     // Handle errors during the fetch
                 });
+        }
+        // Function to get the CSRF token from the cookie
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Search for the csrf token cookie
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
 

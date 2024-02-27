@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 # Importing viewsets from rest_framework
 from rest_framework import viewsets
 # Linking Serializers and Questions Models
@@ -16,6 +16,7 @@ from django.core.files import File
 import logging
 import json
 from django.urls import reverse
+import smtplib
 
 # Configure the logger
 logging.basicConfig(level=logging.ERROR)  # Set the logging level to ERROR or another desired level
@@ -67,6 +68,9 @@ def create_career(request):
     if cv_file:
         career.cv.save(cv_file.name,File(cv_file))
 
+    # Send email
+    send_email(career)
+
     # Save the Career model instance to the database
     career.save()
 
@@ -80,6 +84,25 @@ def create_career(request):
         'cv': career.cv.url,
         'testid': career.testid,
     }}, status=status.HTTP_201_CREATED)
+
+def send_email(career):
+    # SMTP configuration
+    smtp_host = 'ramo.co.in'  # Replace with your mail server's hostname
+    smtp_port = 587  # Change to the appropriate port
+    smtp_user = 'noreply@ramo.co.in'
+    smtp_password = 'noreply@noreply'  # Replace with your SMTP password
+
+    # Email content
+    subject = 'Career Application Details'
+    message = f"Dear {career.name},\n\nThank you for applying! Your test ID is: {career.testid}\n\nDetails:\nName: {career.name}\nEmail: {career.mail}\nContact Number: {career.contactnumber}\nCategory: {career.category}\nExperience: {career.experience}\n\nBest regards,\nYour Company"
+
+    # Create SMTP session
+    with smtplib.SMTP(smtp_host, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+
+        # Send email
+        server.sendmail(smtp_user, career.mail, f'Subject: {subject}\n\n{message}')
 
 @api_view(['GET'])
 def read_career(request, id):
@@ -237,11 +260,11 @@ def open_quiz(request, category, testid):
     questions_data = [{'id': q.id, 'question': q.question, 'answers': q.answers, 'category': q.category} for q in questions]
 
     return render(request, 'quizpage.html', {'questions':questions_data, 'category': category, 'testid': testid})
-        
+
 @api_view(['POST'])
 def submit_quiz(request):
     try:
-        data = json.loads(request.body.decode('utf-8'))
+        data = request.data  # Use request.data to get the JSON data from the request body
         
         answers = data.get('answers')
         testid = data.get('testid')
@@ -256,14 +279,14 @@ def submit_quiz(request):
             answer_text = answer_data.get('answer')
             question_id = int(answer_data.get('questionId'))
 
-            question = Questions.objects.get(id=question_id)
+            question = get_object_or_404(Questions, id=question_id)
 
             if answer_text == question.correct_answer:
                 correct_count += 1
 
         percentage_correct = (correct_count / total_questions) * 100 if total_questions > 0 else 0
 
-        test = Careers.objects.filter(category=category, testid=testid).first()
+        test = get_object_or_404(Careers, category=category, testid=testid)
 
         if percentage_correct >= 75:
             test.teststatus = 'pass'
@@ -276,10 +299,10 @@ def submit_quiz(request):
         else:
             test.teststatus = 'fail'
             test.save()
-        return Response({
-            'success': True,
-            'message': 'Quiz submission failed. Redirecting to failpage...',
-            'redirect_url': reverse('failpage')  # Get the URL using the Django reverse function
+            return Response({
+                'success': True,
+                'message': 'Quiz submission failed. Redirecting to failpage...',
+                'redirect_url': reverse('failpage')  # Get the URL using the Django reverse function
             })
 
     except Exception as e:
