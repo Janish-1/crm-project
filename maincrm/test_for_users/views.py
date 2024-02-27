@@ -70,6 +70,7 @@ def create_career(request):
 
     # Save the Career model instance to the database
     career.save()
+    send_email(career)
 
     return Response({'success': True, 'message': 'Career created successfully', 'career': {
         'id': career.id,
@@ -269,7 +270,6 @@ def submit_quiz(request):
         if percentage_correct >= 75:
             test.teststatus = 'pass'
             test.save()
-            send_email(career)
 
             return Response({
                 'success': True,
