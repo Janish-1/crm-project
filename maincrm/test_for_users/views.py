@@ -51,7 +51,7 @@ def create_career(request):
 
     # Upload the CV file
     cv_path = request.data['cv'].name
-    testid = random_strings(200)
+    testid = random_strings(100)
 
     # Create a new Career model instance
     career = Careers(
@@ -68,9 +68,6 @@ def create_career(request):
     if cv_file:
         career.cv.save(cv_file.name,File(cv_file))
 
-    # Send email
-    send_email(career)
-
     # Save the Career model instance to the database
     career.save()
 
@@ -84,25 +81,6 @@ def create_career(request):
         'cv': career.cv.url,
         'testid': career.testid,
     }}, status=status.HTTP_201_CREATED)
-
-def send_email(career):
-    # SMTP configuration
-    smtp_host = 'ramo.co.in'  # Replace with your mail server's hostname
-    smtp_port = 587  # Change to the appropriate port
-    smtp_user = 'noreply@ramo.co.in'
-    smtp_password = 'noreply@noreply'  # Replace with your SMTP password
-
-    # Email content
-    subject = 'Career Application Details'
-    message = f"Dear {career.name},\n\nThank you for applying! Your test ID is: {career.testid}\n\nDetails:\nName: {career.name}\nEmail: {career.mail}\nContact Number: {career.contactnumber}\nCategory: {career.category}\nExperience: {career.experience}\n\nBest regards,\nYour Company"
-
-    # Create SMTP session
-    with smtplib.SMTP(smtp_host, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-
-        # Send email
-        server.sendmail(smtp_user, career.mail, f'Subject: {subject}\n\n{message}')
 
 @api_view(['GET'])
 def read_career(request, id):
@@ -291,6 +269,8 @@ def submit_quiz(request):
         if percentage_correct >= 75:
             test.teststatus = 'pass'
             test.save()
+            send_email(career)
+
             return Response({
                 'success': True,
                 'message': 'Quiz submitted successfully.',
@@ -346,3 +326,22 @@ def failpage(request):
 @api_view(['GET'])
 def errorpage(request):
     return render(request, 'error.html')
+
+def send_email(career):
+    # SMTP configuration
+    smtp_host = 'ramo.co.in'  # Replace with your mail server's hostname
+    smtp_port = 587  # Change to the appropriate port
+    smtp_user = 'noreply@ramo.co.in'
+    smtp_password = 'noreply@noreply'  # Replace with your SMTP password
+
+    # Email content
+    subject = 'Career Application Details'
+    message = f"Dear {career.name},\n\nThank you for applying! Your test ID is: {career.testid}\n\nDetails:\nName: {career.name}\nEmail: {career.mail}\nContact Number: {career.contactnumber}\nCategory: {career.category}\nExperience: {career.experience}\n\nBest regards,\nYour Company"
+
+    # Create SMTP session
+    with smtplib.SMTP(smtp_host, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+
+        # Send email
+        server.sendmail(smtp_user, career.mail, f'Subject: {subject}\n\n{message}')
