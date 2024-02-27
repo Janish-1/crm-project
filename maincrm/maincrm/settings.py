@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-7tuc$*!*849y0x^kpd#a*@y!6jyq==d_z+*)osfxs7wfftr34*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['43.204.38.134:8000','ramo.co.in']
+ALLOWED_HOSTS = ['crm-project-l6cl.onrender.com','ramo.co.in']
 
 
 # Application definition
@@ -158,7 +158,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://ramo.co.in",
     "https://ramo.co.in",
-    "http://43.204.38.134:8000"
+    "http://crm-project-l6cl.onrender.com"
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
