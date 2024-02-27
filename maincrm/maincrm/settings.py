@@ -14,6 +14,9 @@ from pathlib import Path
 import os
 # Adding to read .env file
 from dotenv import load_dotenv
+import pymysql
+pymysql.version_info = (1, 4, 6, 'final', 0)
+pymysql.install_as_MySQLdb()
 
 # Loading env variables
 load_dotenv()
@@ -100,7 +103,6 @@ DATABASES = {
         'PORT': os.getenv('DATABASE_PORT'),    
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
