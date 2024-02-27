@@ -199,9 +199,9 @@ def open_quiz(request, category, testid):
     if not testid:
         return Response({'success': False, 'message': "No TestID"}, status=status.HTTP_400_BAD_REQUEST)
 
-    check_if_done = Careers.objects.filter(testid=testid, teststatus='pending').first()
+    user_careers = Careers.objects.filter(testid=testid, teststatus='pending').first()
 
-    if not check_if_done:
+    if not user_careers:
         return Response({'success': False, 'message': "Test Already Done"}, status=status.HTTP_400_BAD_REQUEST)
 
     categories = {
@@ -212,7 +212,7 @@ def open_quiz(request, category, testid):
         'SalesAssociate(Telecaller)': ['Sales', 'Telecaller'],
         'SalesTeamLead': ['Sales', 'SalesTeamLead'],
         'SalesManager': ['Sales', 'SalesManager'],
-        'IonicDeveloper': ['IonicDeveloper', 'Angular', 'React'],
+        'IonicDeveloper': ['IonicDeveloper', 'Angular, React'],
         'SeniorReactNativeDeveloper': ['React Native', 'JavaScript'],
         'DigitalMarketingAssistant': ['Digital Marketing'],
         'GraphicDesigner': ['Graphic Design'],
@@ -225,37 +225,19 @@ def open_quiz(request, category, testid):
 
     questions = []
 
-    # Get the user's experience from the Careers object
-    user_careers = Careers.objects.filter(testid=testid,teststatus='pending').first()
-
-    if user_careers:
-        experience = user_careers.experience_years
-    else:
-        # Default to a value if user's experience is not available
-        experience = 0
-
-    # Define difficulty levels based on experience
-    if experience <= 2:
-        difficulty = 'easy'
-    elif 2 < experience <= 4:
-        difficulty = 'medium'
-    elif experience > 4:
-        difficulty = 'hard'
-    else:
-        difficulty = 'mix'
+    questions_per_category = 15 // len(categories[category])
 
     for individual_category in categories[category]:
-        # Filter questions based on difficulty level
-        individual_questions = Questions.objects.filter(category=individual_category, difficulty=difficulty).order_by('?')[:questions_per_category]
+        individual_questions = Questions.objects.filter(category=individual_category).order_by('?')[:questions_per_category]
         questions.extend(individual_questions)
 
     if not questions:
-        return Response({'success': False, 'message': f"No Questions Available for {category} and Difficulty: {difficulty}"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'success': False, 'message': f"No Questions Available for {category}"}, status=status.HTTP_400_BAD_REQUEST)
 
     questions_data = [{'id': q.id, 'question': q.question, 'answers': q.answers, 'category': q.category} for q in questions]
 
-    return render(request, 'quizpage.html', {'questions': questions_data, 'category': category, 'testid': testid})
-
+    return render(request, 'quizpage.html', {'questions':questions_data, 'category': category, 'testid': testid})
+        
 @api_view(['POST'])
 def submit_quiz(request):
     try:
