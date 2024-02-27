@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-7tuc$*!*849y0x^kpd#a*@y!6jyq==d_z+*)osfxs7wfftr34*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['43.204.38.134:8000','ramo.co.in']
 
 
 # Application definition
@@ -156,7 +156,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8001"
+    "http://ramo.co.in",
+    "https://ramo.co.in"
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
