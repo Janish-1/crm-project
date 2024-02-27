@@ -193,7 +193,7 @@ def redirect_to_test(request):
 
     # Return a 200 response with a success message and the test ID
     return Response({'success': True, 'message': 'Successfully redirected to test page', 'testid': testid,
-                     'redirectUrl': f"http://127.0.0.1:8000/api/quiz/{category}/{testid}"}, status=status.HTTP_200_OK)
+                     'redirectUrl': f"https://crm-project-l6cl.onrender.com/api/quiz/{category}/{testid}"}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def open_quiz(request, category, testid):
