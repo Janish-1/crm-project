@@ -44,7 +44,7 @@
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
 
   <!-- =======================================================
-  * Template Name: NiceAdmin
+  * Template Name: RAMO Pvt Ltd
   * Updated: Jan 29 2024 with Bootstrap v5.3.2
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Author: BootstrapMade.com
@@ -60,7 +60,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="{% url 'home' %}" class="logo d-flex align-items-center w-auto">
         <img src="{% static 'assets/img/logo.png' %}" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">RAMO Pvt Ltd</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -76,14 +76,14 @@
       <ul class="d-flex align-items-center">
 
         <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <a class="nav-link nav-icon search-bar-toggle " href="{% url 'search' %}">
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link nav-icon" href="{% url 'notification' %}" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
             <span class="badge bg-primary badge-number">4</span>
           </a><!-- End Notification Icon -->
@@ -91,7 +91,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
               You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              <a href="{% url 'viewallnotifications' %}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -158,7 +158,7 @@
 
         <li class="nav-item dropdown">
 
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link nav-icon" href="{% url 'messages' %}" data-bs-toggle="dropdown">
             <i class="bi bi-chat-left-text"></i>
             <span class="badge bg-success badge-number">3</span>
           </a><!-- End Messages Icon -->
@@ -166,7 +166,7 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
             <li class="dropdown-header">
               You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              <a href="{% url 'seeallmessages' %}"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -224,7 +224,7 @@
 
         <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="{% url 'profileimage' %}" data-bs-toggle="dropdown">
             <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
             <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.username }}</span>
           </a><!-- End Profile Iamge Icon -->
@@ -239,7 +239,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'profile' %}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -249,7 +249,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'accountsettings' %}">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
@@ -259,7 +259,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'faq' %}">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
@@ -296,22 +296,22 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-menu-button-wide"></i><span>Customers</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="customers-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
+            <a href="{% url 'customer-add' %}">
               <i class="bi bi-circle"></i><span>Add Customers</span>
             </a>
           </li>
           <li>
-            <a href="components-accordion.html">
+            <a href="{% url 'customer-list' %}">
               <i class="bi bi-circle"></i><span>List Customers</span>
             </a>
           </li>
           <li>
-            <a href="components-badges.html">
+            <a href="{% url 'customer-group' %}">
               <i class="bi bi-circle"></i><span>Group Customers</span>
             </a>
           </li>
@@ -319,37 +319,37 @@
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#transactions-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#transactions-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-journal-text"></i><span>Transactions</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="transactions-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
+            <a href="{% url 'transactions-newdeposit' %}">
               <i class="bi bi-circle"></i><span>New Deposit</span>
             </a>
           </li>
           <li>
-            <a href="forms-layouts.html">
+            <a href="{% url 'transactions-newexpense' %}">
               <i class="bi bi-circle"></i><span>New Expense</span>
             </a>
           </li>
           <li>
-            <a href="forms-editors.html">
+            <a href="{% url 'transactions-transfer' %}">
               <i class="bi bi-circle"></i><span>Transfer</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{% url 'transactions-viewtransactions' %}">
               <i class="bi bi-circle"></i><span>View Transaction</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{% url 'transactions-balancesheet' %}">
               <i class="bi bi-circle"></i><span>Balance Sheet</span>
             </a>
           </li>
           <li>
-            <a href="forms-validation.html">
+            <a href="{% url 'transactions-transferreport' %}">
               <i class="bi bi-circle"></i><span>Transfer Report</span>
             </a>
           </li>
@@ -357,51 +357,51 @@
       </li><!-- End Forms Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#sales-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#sales-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-layout-text-window-reverse"></i><span>Sales</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="sales-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
+            <a href="{% url 'sales-invoices' %}">
               <i class="bi bi-circle"></i><span>Invoices</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-newinvoices' %}">
               <i class="bi bi-circle"></i><span>New Invoices</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-recurringinvoices' %}">
               <i class="bi bi-circle"></i><span>Recurring Invoices</span>
             </a>
           </li>
 
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-newrecurringinvoices' %}">
               <i class="bi bi-circle"></i><span>New Recurring Invoices</span>
             </a>
           </li>
 
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-quotes' %}">
               <i class="bi bi-circle"></i><span>Quotes</span>
             </a>
           </li>
 
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-newquotes' %}">
               <i class="bi bi-circle"></i><span>New Quotes</span>
             </a>
           </li>
 
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-payments' %}">
               <i class="bi bi-circle"></i><span>Payments</span>
             </a>
           </li>
           <li>
-            <a href="tables-data.html">
+            <a href="{% url 'sales-taxrates' %}">
               <i class="bi bi-circle"></i><span>Tax Rates</span>
             </a>
           </li>
@@ -409,17 +409,17 @@
       </li><!-- End Tables Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tasks-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#tasks-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Tasks</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tasks-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'tasks-runningrask' %}">
               <i class="bi bi-circle"></i><span>Running Task</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'tasks-archivetask' %}">
               <i class="bi bi-circle"></i><span>Archive Task</span>
             </a>
           </li>
@@ -432,22 +432,22 @@
       </li><!-- End Charts Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#accounting-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#accounting-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-gem"></i><span>Accounting</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="accounting-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="icons-bootstrap.html">
+            <a href="{% url 'accounting-clientpayment' %}">
               <i class="bi bi-circle"></i><span>Client Payment</span>
             </a>
           </li>
           <li>
-            <a href="icons-remix.html">
+            <a href="{% url 'accounting-expensemanagement' %}">
               <i class="bi bi-circle"></i><span>Expense Management</span>
             </a>
           </li>
           <li>
-            <a href="icons-boxicons.html">
+            <a href="{% url 'accounting-expensecategory' %}">
               <i class="bi bi-circle"></i><span>Expense Category</span>
             </a>
           </li>
@@ -455,162 +455,162 @@
       </li><!-- End Icons Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Report</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'report-projectreport' %}">
               <i class="bi bi-circle"></i><span>Project Report</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'report-clientreport' %}">
               <i class="bi bi-circle"></i><span>Client Report</span>
             </a>
           </li>
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'report-expensereport' %}">
               <i class="bi bi-circle"></i><span>Expense Report</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'report-incomeexpensecomparison' %}">
               <i class="bi bi-circle"></i><span>Income Expense Comparison</span>
             </a>
           </li>
         </ul>
       </li><!-- End Charts Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#attendence-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#attendence-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Attendence</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="attendence-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'attendence-timehistory' %}">
               <i class="bi bi-circle"></i><span>Time History</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'attendence-timechangerequest' %}">
               <i class="bi bi-circle"></i><span>Time Change Request</span>
             </a>
           </li>
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'attendence-attendencereport' %}">
               <i class="bi bi-circle"></i><span>Attendence Report</span>
             </a>
           </li>
         </ul>
       </li><!-- End Charts Nav -->      
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Recruitment</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="recruitment-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="jobs-posted.php">
+            <a href="{% url 'recruitment-jobsposted' %}">
               <i class="bi bi-circle"></i><span>Jobs Posted</span>
             </a>
           </li>
           <li>
-            <a href="alljobsapplications">
+            <a href="{% url 'recruitment-jobsapplication' %}">
               <i class="bi bi-circle"></i><span>Jobs Application</span>
             </a>
           </li>
         </ul>
       </li><!-- End Charts Nav -->      
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#payroll-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#payroll-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Payroll</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="payroll-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'payroll-salarytemplate' %}">
               <i class="bi bi-circle"></i><span>Salary Template</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'payroll-hourly' %}">
               <i class="bi bi-circle"></i><span>Hourly</span>
             </a>
           </li>
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'payroll-managesalary' %}">
               <i class="bi bi-circle"></i><span>Manage Salary</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'payroll-employeesalarylist' %}">
               <i class="bi bi-circle"></i><span>Employee Salary List</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'payroll-makepayment' %}">
               <i class="bi bi-circle"></i><span>Make Payment</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'payroll-generatepayslip' %}">
               <i class="bi bi-circle"></i><span>Generate Payslip</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'payroll-payrollsummary' %}">
               <i class="bi bi-circle"></i><span>Payroll Summary</span>
             </a>
           </li>
         </ul>
       </li><!-- End Charts Nav -->      
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#stock-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#stock-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Stock</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="stock-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'stock-stockcategory' %}">
               <i class="bi bi-circle"></i><span>Stock Category</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'stock-managestock' %}">
               <i class="bi bi-circle"></i><span>Manage Stock</span>
             </a>
           </li>
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'stock-asignstock' %}">
               <i class="bi bi-circle"></i><span>Assign Stock</span>
             </a>
           </li>
         </ul>
       </li><!-- End Charts Nav -->     
        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tickets-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link collapsed" data-bs-target="#tickets-nav" data-bs-toggle="collapse" href="">
           <i class="bi bi-bar-chart"></i><span>Tickets</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tickets-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'tickets-answered' %}">
               <i class="bi bi-circle"></i><span>Answered</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'tickets-open' %}">
               <i class="bi bi-circle"></i><span>Open</span>
             </a>
           </li>
           <li>
-            <a href="charts-chartjs.html">
+            <a href="{% url 'tickets-ongoing' %}">
               <i class="bi bi-circle"></i><span>Ongoing</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'tickets-closed' %}">
               <i class="bi bi-circle"></i><span>Closed</span>
             </a>
           </li>
           <li>
-            <a href="charts-apexcharts.html">
+            <a href="{% url 'tickets-alltickets' %}">
               <i class="bi bi-circle"></i><span>All Tickets</span>
             </a>
           </li>
@@ -620,73 +620,73 @@
       <li class="nav-heading">Pages</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{% url 'companies' %}">
           <i class="bi bi-person"></i>
           <span>Companies</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
+        <a class="nav-link collapsed" href="{% url 'faq' %}">
           <i class="bi bi-question-circle"></i>
           <span>Public Holiday</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="{% url 'user' %}">
           <i class="bi bi-envelope"></i>
           <span>User</span>
         </a>
       </li><!-- End Contact Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
+        <a class="nav-link collapsed" href="{% url 'items' %}">
           <i class="bi bi-card-list"></i>
           <span>Items</span>
         </a>
       </li><!-- End Register Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
+        <a class="nav-link collapsed" href="{% url 'departments' %}">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Departments</span>
         </a>
       </li><!-- End Login Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
+        <a class="nav-link collapsed" href="{% url 'documents' %}">
           <i class="bi bi-dash-circle"></i>
           <span>Documents</span>
         </a>
       </li><!-- End Error 404 Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
+        <a class="nav-link collapsed" href="{% url 'training' %}">
           <i class="bi bi-file-earmark"></i>
           <span>Training</span>
         </a>
       </li><!-- End Blank Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
+        <a class="nav-link collapsed" href="{% url 'calendar' %}">
           <i class="bi bi-file-earmark"></i>
           <span>Calendar</span>
         </a>
       </li><!-- End Blank Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
+        <a class="nav-link collapsed" href="{% url 'noticeboard' %}">
           <i class="bi bi-file-earmark"></i>
           <span>Notice Board</span>
         </a>
       </li><!-- End Blank Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
+        <a class="nav-link collapsed" href="{% url 'message' %}">
           <i class="bi bi-file-earmark"></i>
           <span>Message</span>
         </a>
       </li><!-- End Blank Page Nav -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
+        <a class="nav-link collapsed" href="{% url 'notes' %}">
           <i class="bi bi-file-earmark"></i>
           <span>Notes</span>
         </a>
@@ -1349,7 +1349,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>RAMO Pvt Ltd</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->

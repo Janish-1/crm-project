@@ -37,7 +37,7 @@
     <link href="{% static 'assets/css/style_quiz.css' %}" rel="stylesheet">
 
     <!-- =======================================================
-  * Template Name: NiceAdmin
+  * Template Name: RAMO Pvt Ltd
   * Updated: Jan 29 2024 with Bootstrap v5.3.2
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Author: BootstrapMade.com
@@ -59,7 +59,7 @@
                             <div class="d-flex justify-content-center py-4">
                                 <a href="{% url 'home' %}" class="logo d-flex align-items-center w-auto">
                                     <img src="{% static 'assets/img/logo.png' %}" alt="">
-                                    <span class="d-none d-lg-block">NiceAdmin</span>
+                                    <span class="d-none d-lg-block">RAMO Pvt Ltd</span>
                                 </a>
                             </div><!-- End Logo -->
 

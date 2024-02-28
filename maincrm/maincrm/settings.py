@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-7tuc$*!*849y0x^kpd#a*@y!6jyq==d_z+*)osfxs7wfftr34*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['crm-project-l6cl.onrender.com','ramo.co.in']
+ALLOWED_HOSTS = ['crm-project-l6cl.onrender.com','ramo.co.in','127.0.0.1']
 
 
 # Application definition
@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'rest_framework',
     # Adding the tests for users
     'test_for_users',
+    # Adding module for admin panel
+    'crm_module_1',
 ]
 
 MIDDLEWARE = [
@@ -156,9 +158,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://ramo.co.in",
     "https://ramo.co.in",
-    "http://crm-project-l6cl.onrender.com"
+    "http://crm-project-l6cl.onrender.com",
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

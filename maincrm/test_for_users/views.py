@@ -70,7 +70,6 @@ def create_career(request):
 
     # Save the Career model instance to the database
     career.save()
-    send_email(career)
 
     return Response({'success': True, 'message': 'Career created successfully', 'career': {
         'id': career.id,
@@ -238,7 +237,7 @@ def open_quiz(request, category, testid):
 
     questions_data = [{'id': q.id, 'question': q.question, 'answers': q.answers, 'category': q.category} for q in questions]
 
-    return render(request, 'quizpage.html', {'questions':questions_data, 'category': category, 'testid': testid})
+    return render(request, 'quizpage.php', {'questions':questions_data, 'category': category, 'testid': testid})
 
 @api_view(['POST'])
 def submit_quiz(request):
@@ -317,31 +316,12 @@ def fail_testee(request):
 
 @api_view(['GET'])
 def passpage(request):
-    return render(request, 'passpage.html')
+    return render(request, 'passpage.php')
 
 @api_view(['GET'])
 def failpage(request):
-    return render(request, 'failpage.html')
+    return render(request, 'failpage.php')
 
 @api_view(['GET'])
 def errorpage(request):
-    return render(request, 'error.html')
-
-def send_email(career):
-    # SMTP configuration
-    smtp_host = 'ramo.co.in'  # Replace with your mail server's hostname
-    smtp_port = 587  # Change to the appropriate port
-    smtp_user = 'noreply@ramo.co.in'
-    smtp_password = 'noreply@noreply'  # Replace with your SMTP password
-
-    # Email content
-    subject = 'Career Application Details'
-    message = f"Dear {career.name},\n\nThank you for applying! Your test ID is: {career.testid}\n\nDetails:\nName: {career.name}\nEmail: {career.mail}\nContact Number: {career.contactnumber}\nCategory: {career.category}\nExperience: {career.experience}\n\nBest regards,\nYour Company"
-
-    # Create SMTP session
-    with smtplib.SMTP(smtp_host, smtp_port) as server:
-        server.starttls()
-        server.login(smtp_user, smtp_password)
-
-        # Send email
-        server.sendmail(smtp_user, career.mail, f'Subject: {subject}\n\n{message}')
+    return render(request, 'error.php')
