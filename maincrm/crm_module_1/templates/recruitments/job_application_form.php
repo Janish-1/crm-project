@@ -710,6 +710,170 @@
       </nav>
     </div><!-- End Page Title -->
 
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">All Job Applications</h5>
+        <div class="table-responsive">
+          <!-- Table with hoverable rows -->
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Mail</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Category</th>
+                <th scope="col">Experience</th>
+                <th scope="col">CV</th>
+                <th scope="col">Status</th>
+                <th scope="col">Test Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for application in job_applications %}
+              <tr>
+                <th scope="row">{{ application.id }}</th>
+                <td>{{ application.name }}</td>
+                <td>{{ application.mail }}</td>
+                <td>{{ application.contactnumber }}</td>
+                <td>{{ application.category }}</td>
+                <td>{{ application.experience }}</td>
+                <td>{{ application.cv }}</td>
+                <td>{{ application.status }}</td>
+                <td>{{ application.teststatus }}</td>
+                <td>
+                  <!-- Action Dropdown -->
+                  <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      Actions
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="actionDropdown">
+                      <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                          data-bs-target="#updateModal{{ application.id }}">Update</a></li>
+                      <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                          data-bs-target="#deleteModal{{ application.id }}">Delete</a></li>
+                      <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                          data-bs-target="#readModal{{ application.id }}">Read</a></li>
+                    </ul>
+                  </div>
+                  <!-- End Action Dropdown -->
+                </td>
+              </tr>
+              <!-- Update Modal -->
+              <div class="modal fade" id="updateModal{{ application.id }}" tabindex="-1"
+                aria-labelledby="updateModalLabel{{ application.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Update Form</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="row mb-3">
+                          <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" value="{{ application.name }}">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                          <div class="col-sm-10">
+                            <input type="email" class="form-control" value="{{ application.mail }}">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
+                          <div class="col-sm-10">
+                            <input type="number" class="form-control" value="{{ application.contactnumber }}">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputText" class="col-sm-2 col-form-label">Category</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" value="{{ application.category }}">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
+                          <div class="col-sm-10">
+                            <input type="number" class="form-control" value="{{ application.experience }}">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputText" class="col-sm-2 col-form-label">CV</label>
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" id="formFile">
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="statusDropdown" class="col-sm-2 col-form-label">Status</label>
+                          <div class="col-sm-10">
+                            <select class="form-select" id="statusDropdown" name="status">
+                              <option value="pending" selected>Pending</option>
+                              <option value="approved">Approved</option>
+                              <option value="rejected">Rejected</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="row mb-3">
+                          <label for="appliedToDropdown" class="col-sm-2 col-form-label">Applied To</label>
+                          <div class="col-sm-10">
+                            <select class="form-select" id="appliedToDropdown" name="appliedTo">
+                              <option value="Ramo Pvt Ltd" selected>Ramo Pvt Ltd</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form><!-- End General Form Elements -->
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary"
+                        onclick="confirmUpdate({{ application.id }})">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Delete Modal -->
+              <div class="modal fade" id="deleteModal{{ application.id }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel{{ application.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Delete Confirmation</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Are you sure you want to delete this entry?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary"
+                        onclick="confirmDelete({{ application.id }})">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Delete Modal -->
+
+              <!-- Read Modal -->
+              <div class="modal fade" id="readModal{{ application.id }}" tabindex="-1"
+                aria-labelledby="readModalLabel{{ application.id }}" aria-hidden="true">
+                <!-- Modal content goes here -->
+              </div>
+              {% endfor %}
+            </tbody>
+          </table>
+          <!-- End Table with hoverable rows -->
+        </div>
+      </div>
+    </div>
+
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

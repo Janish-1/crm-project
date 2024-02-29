@@ -16,7 +16,12 @@ from django.core.files import File
 import logging
 import json
 from django.urls import reverse
+
+# Importing the SMTP Libraries
 import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
 # Configure the logger
 logging.basicConfig(level=logging.ERROR)  # Set the logging level to ERROR or another desired level
@@ -52,6 +57,22 @@ def create_career(request):
     # Upload the CV file
     cv_path = request.data['cv'].name
     testid = random_strings(100)
+
+    # Email sending logic
+    subject = "Career Form Submission"
+    message = f"Dear {request.data['name']},\nThank you for submitting your career form.\nYour Test ID is: {testid}\nUse this ID to start the test."
+
+    sender = 'noreply@ramo.co.in'
+    recipient = request.data['mail']
+    
+    try:
+        # Using Django's EmailMessage
+        email = EmailMessage(subject, message, sender, [recipient])
+        email.send()
+
+    except Exception as e:
+        # Handle email sending failure
+        return Response({'success': False, 'message': 'Error sending email', 'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # Create a new Career model instance
     career = Careers(

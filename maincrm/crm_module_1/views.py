@@ -6,7 +6,7 @@ def job_application(request):
     # Retrieve all job applications
     job_applications = Careers.objects.all()
 
-    return render(request, 'job_application_form.php', {'job_applications': job_applications})
+    return render(request, 'recruitments/job_application_form.php', {'job_applications': job_applications})
 
 def create_job_application(request):
     if request.method == 'POST':
