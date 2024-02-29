@@ -22,6 +22,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
+from django.core.mail import EmailMessage
 
 # Configure the logger
 logging.basicConfig(level=logging.ERROR)  # Set the logging level to ERROR or another desired level
