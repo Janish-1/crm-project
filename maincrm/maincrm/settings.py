@@ -163,3 +163,18 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# Email System
+
+# Use SMTP as the email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# SMTP server settings for cPanel
+EMAIL_HOST = 'ramo.co.in'
+EMAIL_PORT = 587  # Use the appropriate port (587 is common for secure connections)
+EMAIL_USE_TLS = True  # Set to True if your SMTP server uses TLS
+EMAIL_USE_SSL = False  # Set to True if your SMTP server uses SSL
+
+# SMTP authentication (if required)
+EMAIL_HOST_USER = 'noreply@ramo.co.in'  # Replace with your cPanel email address
+EMAIL_HOST_PASSWORD = '.OwE6EY5E82c'  # Replace with your cPanel email password
