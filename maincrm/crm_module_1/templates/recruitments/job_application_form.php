@@ -739,7 +739,7 @@
                 <td>{{ application.contactnumber }}</td>
                 <td>{{ application.category }}</td>
                 <td>{{ application.experience }}</td>
-                <td>{{ application.cv }}</td>
+                <td><a href="{{ MEDIA_URL }}{{ application.cv.url }}">View CV</a></td>
                 <td>{{ application.status }}</td>
                 <td>{{ application.teststatus }}</td>
                 <td>
@@ -771,41 +771,41 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form>
+                    <form id="UpdateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                         <div class="row mb-3">
                           <label for="inputText" class="col-sm-2 col-form-label">Name</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" value="{{ application.name }}">
+                            <input type="text" class="form-control" name="name" value="{{ application.name }}">
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                           <div class="col-sm-10">
-                            <input type="email" class="form-control" value="{{ application.mail }}">
+                            <input type="email" class="form-control" name="mail" value="{{ application.mail }}">
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" value="{{ application.contactnumber }}">
+                            <input type="number" class="form-control" name="contactnumber" value="{{ application.contactnumber }}">
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label for="inputText" class="col-sm-2 col-form-label">Category</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" value="{{ application.category }}">
+                            <input type="text" class="form-control" name="category" value="{{ application.category }}">
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" value="{{ application.experience }}">
+                            <input type="number" class="form-control" name="experience" value="{{ application.experience }}">
                           </div>
                         </div>
                         <div class="row mb-3">
                           <label for="inputText" class="col-sm-2 col-form-label">CV</label>
                           <div class="col-sm-10">
-                            <input class="form-control" type="file" id="formFile">
+                            <input class="form-control" type="file" name="cv" id="formFile">
                           </div>
                         </div>
 
@@ -820,14 +820,14 @@
                           </div>
                         </div>
 
-                        <div class="row mb-3">
+                        <!-- <div class="row mb-3">
                           <label for="appliedToDropdown" class="col-sm-2 col-form-label">Applied To</label>
                           <div class="col-sm-10">
                             <select class="form-select" id="appliedToDropdown" name="appliedTo">
                               <option value="Ramo Pvt Ltd" selected>Ramo Pvt Ltd</option>
                             </select>
                           </div>
-                        </div>
+                        </div> -->
                       </form><!-- End General Form Elements -->
                     </div>
                     <div class="modal-footer">
@@ -864,8 +864,31 @@
               <!-- Read Modal -->
               <div class="modal fade" id="readModal{{ application.id }}" tabindex="-1"
                 aria-labelledby="readModalLabel{{ application.id }}" aria-hidden="true">
-                <!-- Modal content goes here -->
-              </div>
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Details about {{ application.name }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p><strong>Name:</strong> {{ application.name }}</p>
+                      <p><strong>Email:</strong> {{ application.mail }}</p>
+                      <p><strong>Contact Number:</strong> {{ application.contactnumber }}</p>
+                      <p><strong>Category:</strong> {{ application.category }}</p>
+                      <p><strong>Experience:</strong> {{ application.experience }}</p>
+                      <!-- Display CV as image -->
+                      <p><strong>CV:</strong>
+                        <a href="{{ MEDIA_URL }}{{ application.cv.url }}" target="_blank" rel="noopener noreferrer">
+                          View CV
+                        </a>
+                      </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Scrolling Modal-->
               {% endfor %}
             </tbody>
           </table>

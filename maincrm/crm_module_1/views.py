@@ -1,6 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from test_for_users.models import Careers 
+from test_for_users.models import Careers
+# Rest Framework
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
 
 def job_application(request):
     # Retrieve all job applications
@@ -8,37 +13,54 @@ def job_application(request):
 
     return render(request, 'recruitments/job_application_form.php', {'job_applications': job_applications})
 
-def create_job_application(request):
-    if request.method == 'POST':
-        form = Careers(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Job application created successfully!')
-            return redirect('alljobapplication')
-    else:
-        form = Careers()
+@api_view(['PUT'])
+def update_job_application(request,id):
+    # Validate the incoming request
+    required_fields = ['name', 'mail', 'contactnumber', 'category', 'experience','cv','status']
+    for field in required_fields:
+        if field not in request.data:
+            return Response({'success': False, 'message': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
 
-    return render(request, 'job_application_form.php', {'form': form})
+    # Find the Career model instance by ID
+    try:
+        career = Careers.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
 
-def update_job_application(request, pk):
-    job_application = get_object_or_404(JobApplication, pk=pk)
+    # Update the Career model instance with the new data
+    career.name = request.data['name']
+    career.mail = request.data['mail']
+    career.contactnumber = request.data['contactnumber']
+    career.category = request.data['category']
+    career.experience = request.data['experience']
+    career.status = request.data['status']
 
-    if request.method == 'POST':
-        form = Careers(request.POST, instance=job_application)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Job application updated successfully!')
-            return redirect('alljobapplication')
-    else:
-        form = Careers(instance=job_application)
+    # Update the CV file if a new file is provided
+    if 'cv' in request.data:
+        cv_path = request.data['cv'].name
+        career.cv = cv_path
 
-    return render(request, 'job_application_form.php', {'form': form})
+    # Save the updated Career model instance
+    career.save()
 
-def delete_job_application(request, pk):
-    job_application = get_object_or_404(Careers, pk=pk)
-    job_application.delete()
-    messages.success(request, 'Job application deleted successfully!')
-    return redirect('alljobapplication')
+    return Response({'success': True, 'message': 'Career updated successfully' }, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_job_application(request):
+    # Find the Career model instance by ID
+    try:
+        career = Careers.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Delete the CV file
+    if career.cv:
+        career.cv.delete()
+
+    # Delete the Career model instance
+    career.delete()
+
+    return Response({'success': True, 'message': 'Career deleted successfully'}, status=status.HTTP_200_OK)
 
 def search_view(request):
     return render(request, 'your_template.php', {})

@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 # Added Include for adding authentication app to program
 from django.urls import path,include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +31,6 @@ urlpatterns = [
     # Added link for callin api with normal routes
     path('api/',include('test_for_users.urls')),
 ]
+# Serve media files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
