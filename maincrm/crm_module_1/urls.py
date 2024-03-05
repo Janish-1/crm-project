@@ -66,6 +66,8 @@ urlpatterns = [
     # Recruitment URLs
     path('recruitment-jobsposted/', views.recruitment_jobs_posted_view, name='recruitment-jobsposted'),
     path('recruitment-jobsapplication/', views.job_application, name='recruitment-jobsapplication'),
+    path('recruitment-update-jobsapplication/',views.update_job_application,name='recruitment-update-jobsapplication'),
+    path('rectuitmenet-delete-jobsapplication/',views.delete_job_application,name='recruitment-delete-jobsapplication'),
 
     # Payroll URLs
     path('payroll-salarytemplate/', views.payroll_salary_template_view, name='payroll-salarytemplate'),

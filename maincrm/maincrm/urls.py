@@ -25,9 +25,10 @@ urlpatterns = [
     # Added link to urls in authentication app
     path('',include('authentication.urls')),
     # Adding Link to dashboard Module
+    path('api/',include('crm_module_1.urls')),
     path('',include('crm_module_1.urls')),
-    # Added link for calling api using router
-    path('',include('test_for_users.urls')),
+    # # Added link for calling api using router
+    # path('',include('test_for_users.urls')),
     # Added link for callin api with normal routes
     path('api/',include('test_for_users.urls')),
 ]

@@ -928,6 +928,16 @@
 
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
+  <script>
+    function updateform(event) {
+      // Prevent Reload
+      event.preventDefault();
+      // Create a XHR Request
+      var xhr = new XMLHttpRequest();
+      //Configure the XHR Request for Specified URL
+      xhr.open('POST','/api/')
+    }
+  </script>
 
 </body>
 
