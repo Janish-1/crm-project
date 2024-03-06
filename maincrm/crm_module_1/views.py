@@ -46,7 +46,7 @@ def update_job_application(request,id):
     return Response({'success': True, 'message': 'Career updated successfully' }, status=status.HTTP_200_OK)
 
 @api_view(['DELETE'])
-def delete_job_application(request):
+def delete_job_application(request,id):
     # Find the Career model instance by ID
     try:
         career = Careers.objects.get(id=id)

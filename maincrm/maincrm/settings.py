@@ -180,4 +180,4 @@ EMAIL_USE_SSL = False  # Set to True if your SMTP server uses SSL
 EMAIL_HOST_USER = 'noreply@ramo.co.in'  # Replace with your cPanel email address
 EMAIL_HOST_PASSWORD = '.OwE6EY5E82c'  # Replace with your cPanel email password
 
-BACKEND_URL = 'http://localhost:8000'
+BACKEND_URL = 'http://127.0.0.1:8000'

@@ -771,7 +771,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    <form id="UpdateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                      <form id="UpdateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                         <div class="row mb-3">
                           <label for="inputText" class="col-sm-2 col-form-label">Name</label>
                           <div class="col-sm-10">
@@ -787,7 +787,8 @@
                         <div class="row mb-3">
                           <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" name="contactnumber" value="{{ application.contactnumber }}">
+                            <input type="number" class="form-control" name="contactnumber"
+                              value="{{ application.contactnumber }}">
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -799,7 +800,8 @@
                         <div class="row mb-3">
                           <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" name="experience" value="{{ application.experience }}">
+                            <input type="number" class="form-control" name="experience"
+                              value="{{ application.experience }}">
                           </div>
                         </div>
                         <div class="row mb-3">
@@ -929,13 +931,72 @@
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
   <script>
-    function updateform(event) {
-      // Prevent Reload
-      event.preventDefault();
-      // Create a XHR Request
-      var xhr = new XMLHttpRequest();
-      //Configure the XHR Request for Specified URL
-      xhr.open('POST','/api/')
+    function confirmUpdate(applicationId) {
+      let formdata = new FormData(document.getElementById('UpdateForm'));
+
+      fetch('/api/recruitment-update-jobsapplication/', {
+        method: 'PUT',
+        body: formdata,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'), // Add CSRF token
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network Error');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Data Updated Successfully', data);
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error updating data:', error);
+          // Display an error message to the user
+          alert('Error updating data. Please try again.');
+        });
+    }
+
+    function confirmDelete(applicationId) {
+      fetch('/api/recruitment-delete-jobsapplication/' + applicationId, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie('csrftoken'), // Add CSRF token
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Delete successful:', data);
+          window.location.reload();
+        })
+        .catch(error => {
+          console.error('Error deleting data:', error);
+          // Display an error message to the user
+          alert('Error deleting data. Please try again.');
+        });
+    }
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
     }
   </script>
 
