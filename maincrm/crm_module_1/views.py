@@ -1,66 +1,14 @@
+# Importing Django
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+# Importing Models
 from test_for_users.models import Careers
+from .models import *
 # Rest Framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-
-
-def job_application(request):
-    # Retrieve all job applications
-    job_applications = Careers.objects.all()
-
-    return render(request, 'recruitments/job_application_form.php', {'job_applications': job_applications})
-
-@api_view(['PUT'])
-def update_job_application(request,id):
-    # Validate the incoming request
-    required_fields = ['name', 'mail', 'contactnumber', 'category', 'experience','cv','status']
-    for field in required_fields:
-        if field not in request.data:
-            return Response({'success': False, 'message': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
-
-    # Find the Career model instance by ID
-    try:
-        career = Careers.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    # Update the Career model instance with the new data
-    career.name = request.data['name']
-    career.mail = request.data['mail']
-    career.contactnumber = request.data['contactnumber']
-    career.category = request.data['category']
-    career.experience = request.data['experience']
-    career.status = request.data['status']
-
-    # Update the CV file if a new file is provided
-    if 'cv' in request.data:
-        cv_path = request.data['cv'].name
-        career.cv = cv_path
-
-    # Save the updated Career model instance
-    career.save()
-
-    return Response({'success': True, 'message': 'Career updated successfully' }, status=status.HTTP_200_OK)
-
-@api_view(['DELETE'])
-def delete_job_application(request,id):
-    # Find the Career model instance by ID
-    try:
-        career = Careers.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
-
-    # Delete the CV file
-    if career.cv:
-        career.cv.delete()
-
-    # Delete the Career model instance
-    career.delete()
-
-    return Response({'success': True, 'message': 'Career deleted successfully'}, status=status.HTTP_200_OK)
 
 def search_view(request):
     return render(request, 'your_template.php', {})
@@ -203,10 +151,93 @@ def attendence_attendence_report_view(request):
 
 # Recruitment Views
 def recruitment_jobs_posted_view(request):
-    return render(request, 'recruitment/recruitment_jobs_posted_view.php', {})
+    job_posts = JobPost.objects.all()
+    return render(request, 'recruitments/job_posted.php', {'job_posts': job_posts})
 
-def recruitment_jobs_application_view(request):
-    return render(request, 'recruitment/recruitment_jobs_application_view.php', {})
+def job_post_detail(request, job_post_id):
+    job_post = get_object_or_404(JobPost, pk=job_post_id)
+    return render(request, 'recruitments/job_post_detail.php', {'job_post': job_post})
+
+def create_job_post(request):
+    if request.method == 'POST':
+        form = JobPostForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('recruitment-jobsposted')
+    else:
+        form = JobPostForm()
+    return render(request, 'recruitments/job_post_form.php', {'form': form})
+
+def update_job_post(request, job_post_id):
+    job_post = get_object_or_404(JobPost, pk=job_post_id)
+    if request.method == 'POST':
+        form = JobPostForm(request.POST, instance=job_post)
+        if form.is_valid():
+            form.save()
+            return redirect('recruitment-jobsposted')
+    else:
+        form = JobPostForm(instance=job_post)
+    return render(request, 'recruitments/job_post_form.php', {'form': form})
+
+def delete_job_post(request, job_post_id):
+    job_post = get_object_or_404(JobPost, pk=job_post_id)
+    job_post.delete()
+    return redirect('recruitment-jobsposted')
+    
+def job_application(request):
+    # Retrieve all job applications
+    job_applications = Careers.objects.all()
+
+    return render(request, 'recruitments/job_application_form.php', {'job_applications': job_applications})
+
+@api_view(['PUT'])
+def update_job_application(request,id):
+    # Validate the incoming request
+    required_fields = ['name', 'mail', 'contactnumber', 'category', 'experience', 'status']
+    for field in required_fields:
+        if field not in request.data:
+            return Response({'success': False, 'message': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Find the Career model instance by ID
+    try:
+        career = Careers.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Update the Career model instance with the new data
+    career.name = request.data['name']
+    career.mail = request.data['mail']
+    career.contactnumber = request.data['contactnumber']
+    career.category = request.data['category']
+    career.experience = request.data['experience']
+    career.status = request.data['status']
+
+    # Update the CV file if a new file is provided
+    if 'cv' in request.data and request.data['cv']:
+        cv_file = request.data['cv']
+        career.cv.save(cv_file.name, cv_file, save=True)
+
+    # Save the updated Career model instance
+    career.save()
+
+    return Response({'success': True, 'message': 'Career updated successfully'}, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_job_application(request,id):
+    # Find the Career model instance by ID
+    try:
+        career = Careers.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return Response({'success': False, 'message': 'Career not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Delete the CV file
+    if career.cv:
+        career.cv.delete()
+
+    # Delete the Career model instance
+    career.delete()
+
+    return Response({'success': True, 'message': 'Career deleted successfully'}, status=status.HTTP_200_OK)
 
 # Payroll Views
 def payroll_salary_template_view(request):

@@ -65,8 +65,12 @@ urlpatterns = [
 
     # Recruitment URLs
     path('recruitment-jobsposted/', views.recruitment_jobs_posted_view, name='recruitment-jobsposted'),
+    path('job-post/<int:job_post_id>/', views.job_post_detail, name='job_post_detail'),
+    path('create-job-post/', views.create_job_post, name='create_job_post'),
+    path('update-job-post/<int:job_post_id>/', views.update_job_post, name='update_job_post'),
+    path('delete-job-post/<int:job_post_id>/', views.delete_job_post, name='delete_job_post'),
     path('recruitment-jobsapplication/', views.job_application, name='recruitment-jobsapplication'),
-    path('recruitment-update-jobsapplication/',views.update_job_application,name='recruitment-update-jobsapplication'),
+    path('recruitment-update-jobsapplication/<int:id>',views.update_job_application,name='recruitment-update-jobsapplication'),
     path('recruitment-delete-jobsapplication/<int:id>',views.delete_job_application,name='recruitment-delete-jobsapplication'),
 
     # Payroll URLs

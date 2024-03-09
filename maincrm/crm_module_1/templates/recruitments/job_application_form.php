@@ -702,11 +702,17 @@
 
     <div class="pagetitle">
       <h1>Job Applications</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">recruitment-jobsapplication</li>
-        </ol>
+      <nav class="row">
+        <div class="col-lg">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">recruitment-jobsapplication</li>
+          </ol>
+        </div>
+        <div class="col-sm text-end">
+          <a class="btn btn-primary rounded-pill" href="#" data-bs-toggle="modal"
+            data-bs-target="#createModal{{ post.id }}">Create Job Application</a>
+        </div>
       </nav>
     </div><!-- End Page Title -->
 
@@ -761,6 +767,89 @@
                   <!-- End Action Dropdown -->
                 </td>
               </tr>
+
+              <!-- Create Modal -->
+              <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Create Form</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="CreateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                        <div class="row mb-3">
+                          <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                          <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" value="">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                          <div class="col-sm-10">
+                            <input type="email" class="form-control" name="mail" value="">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
+                          <div class="col-sm-10">
+                            <input type="number" class="form-control" name="contactnumber" value="">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="category" class="col-sm-2 col-form-label">Category</label>
+                          <div class="col-sm-10">
+                            <select class="form-select" name="category">
+                              <option value="" disabled selected>Select Category</option>
+                              <option value="SeniorFullStack5PlusYears">Senior Full Stack- 5+ Years</option>
+                              <option value="SeniorUnityGameDeveloper">Senior Unity Game Developer</option>
+                              <option value="GameDesigner">Game Designer</option>
+                              <option value="BackendGameDeveloper">Backend Game Developer</option>
+                              <option value="SalesAssociate(Telecaller)">Sales Associate (Telecaller)</option>
+                              <option value="SalesTeamLead">Sales Team Lead</option>
+                              <option value="SalesManager">Sales Manager</option>
+                              <option value="IonicDeveloper">Ionic Developer</option>
+                              <option value="SeniorReactNativeDeveloper">Senior React Native Developer</option>
+                              <option value="DigitalMarketingAssistant">Digital Marketing Assistant</option>
+                              <option value="GraphicDesigner">Graphic Designer</option>
+                              <option value="DevOps">DevOps</option>
+                              <option value="QualityAssurance">Quality Assurance</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
+                          <div class="col-sm-10">
+                            <input type="number" class="form-control" name="experience" value="">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="inputText" class="col-sm-2 col-form-label">CV</label>
+                          <div class="col-sm-10">
+                            <input class="form-control" type="file" name="cv" id="formFile">
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <label for="statusDropdown" class="col-sm-2 col-form-label">Status</label>
+                          <div class="col-sm-10">
+                            <select class="form-select" id="statusDropdown" name="status">
+                              <option value="pending" selected>Pending</option>
+                              <option value="approved">Approved</option>
+                              <option value="rejected">Rejected</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary" onclick="confirmCreate()">Submit</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Update Modal -->
               <div class="modal fade" id="updateModal{{ application.id }}" tabindex="-1"
                 aria-labelledby="updateModalLabel{{ application.id }}" aria-hidden="true">
@@ -931,12 +1020,56 @@
   <!-- Template Main JS File -->
   <script src="{% static 'assets/js/main.js' %}"></script>
   <script>
+    function confirmCreate() {
+      // Get form data
+      var formData = new FormData(document.getElementById('CreateForm'));
+
+      // Use Fetch API to submit the form data
+      fetch("/api/createcareer", {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken'), // Add CSRF token
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network Error');
+          }
+          return response.json();
+        })
+        .then(response => {
+          // Log the response to the console for debugging
+          console.log(response);
+
+          if (response.success) {
+            console.log('Data Created Successfully', response.career);
+            window.location.reload();
+          } else {
+            // API request failed, handle the error
+            alert("Error: " + (response.message ? response.message : "Unknown error"));
+          }
+        })
+        .catch(error => {
+          // Log detailed error information to the console for debugging
+          console.error(error);
+
+          // Handle Fetch errors
+          alert("Fetch error: " + error.message);
+        });
+    }
+
     function confirmUpdate(applicationId) {
       let formdata = new FormData(document.getElementById('UpdateForm'));
+      // Convert FormData to a plain object
+      let inputdata = {};
+      formdata.forEach((value, key) => {
+        inputdata[key] = value;
+      });
 
-      fetch('/api/recruitment-update-jobsapplication/', {
+      fetch('/api/recruitment-update-jobsapplication/' + applicationId, {
         method: 'PUT',
-        body: formdata,
+        body: JSON.stringify(inputdata),
         headers: {
           'Content-Type': 'application/json',
           'X-CSRFToken': getCookie('csrftoken'), // Add CSRF token
