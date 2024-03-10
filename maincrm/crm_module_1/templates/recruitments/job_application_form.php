@@ -17,7 +17,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Recruitment-Job Application</title>
+  <title>Job Application</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -706,12 +706,13 @@
         <div class="col-lg">
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">recruitment-jobsapplication</li>
+            <li class="breadcrumb-item active">Job Applications</li>
           </ol>
         </div>
         <div class="col-sm text-end">
-          <a class="btn btn-primary rounded-pill" href="#" data-bs-toggle="modal"
-            data-bs-target="#createModal{{ post.id }}">Create Job Application</a>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+            Create Job Application
+          </button>
         </div>
       </nav>
     </div><!-- End Page Title -->
@@ -769,12 +770,11 @@
               </tr>
 
               <!-- Create Modal -->
-              <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+              <div class="modal fade" id="createModal" tabindex="-1">
+                <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title">Create Form</h5>
+                      <h5 class="modal-title">Basic Modal</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -844,11 +844,11 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary" onclick="confirmCreate()">Submit</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div><!-- End Create Modal-->
 
               <!-- Update Modal -->
               <div class="modal fade" id="updateModal{{ application.id }}" tabindex="-1"

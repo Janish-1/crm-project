@@ -1,0 +1,71 @@
+Website->
+    Home Page->Add work details on the banner
+    About Page->Company/Team/Process of Working/Awards/Blogs
+    Service Page->  Type:Industry/Corporation - Pick One
+                    If he wants service->
+                        form-> 
+                            category of business
+                            type of business
+                            features list(pickable from a list-default section additional section)
+                            Technology(set a default if not picked)
+                            Templates(What the user wants -> give 4 templates for each category)
+                            Refrence Link
+                            Register(Create business login credentials->Send to mail and other stuff)
+                        automate proposal->
+                            create a proposal according to the requirement from client
+    Portfolio->List all company projects->Clicakble to new page (Done)
+    Career-> Career form and send to test page-> credentials on the email for test->Clicakble to new page (Done)
+
+
+CRM Part->
+    Developer Part->
+        Function:   Project Comes it is assigned to a developer of that technology
+                        ->notify to product manager and team lead as well
+                    Make Feature Check List
+    HR Part->
+        Function:   HR hires if need more developers
+                        ->Increase or Decrease Salary based on the project deadlines of Developer
+                        ->Promotion,Demotion and Firing from control
+                        ->knows about project and process
+    Client/User Part->
+                    Send Credentials to the Client to see the proposal on the crm app
+
+    Sales Team Part->
+                        Get data from service page and send the client payment link - whatsapp/message/email
+                        Get Initial Details from the client - logo and other features required
+                        and give approval if all data is recieved
+                        More Changes Add Charges - make it editable to increase amount with a comment attached
+                        Get Message from client if they want new feature to negotiate pricing
+    Project Part->
+                    2 different Timelines for project
+                    If no template start from scratch and create documentation
+    Account Team Part->
+                        Give Approval to line up project if payment is done                
+    Support Team Part->
+                        Get Stuff such as logo and other dev requirements from the client
+    UI Team Part->
+                    Gets Approval from Sales to start making UI of Project
+                    UI Made Assigned to the Developers
+    Client Part->
+                    Everyone can see the communications of client additional requirements-No Phone only email or messages
+    Basic Features->
+                    Basic CRM Features and make it updateable and scalable
+
+
+    Logins-> Super Admin,Admin,Director login,CEO Login,Manager Login,Team Lead Login,Project Managet Login,HR Login,HR Assistant Login,Sales Login,Developer Login
+             CLient Login
+             All have different Dashboards
+             Super Admin
+             Team Lead - See Sales rELATED
+             PROJECT Manager - SEe Tasks Pening 
+
+             HR and HR Assistant Prio -> direct call , email , whatsapp,-> Schedule Appointment for joiners
+             
+             Add Role Based
+
+    Test->  Easy - 2 yr
+            Med - 2-4
+            Hard - 4-10
+            Done
+
+            Move Fail Candidates to another database
