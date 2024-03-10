@@ -769,87 +769,6 @@
                 </td>
               </tr>
 
-              <!-- Create Modal -->
-              <div class="modal fade" id="createModal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Basic Modal</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form id="CreateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                        <div class="row mb-3">
-                          <label for="inputText" class="col-sm-2 col-form-label">Name</label>
-                          <div class="col-sm-10">
-                            <input type="text" class="form-control" name="name" value="">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                          <div class="col-sm-10">
-                            <input type="email" class="form-control" name="mail" value="">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
-                          <div class="col-sm-10">
-                            <input type="number" class="form-control" name="contactnumber" value="">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="category" class="col-sm-2 col-form-label">Category</label>
-                          <div class="col-sm-10">
-                            <select class="form-select" name="category">
-                              <option value="" disabled selected>Select Category</option>
-                              <option value="SeniorFullStack5PlusYears">Senior Full Stack- 5+ Years</option>
-                              <option value="SeniorUnityGameDeveloper">Senior Unity Game Developer</option>
-                              <option value="GameDesigner">Game Designer</option>
-                              <option value="BackendGameDeveloper">Backend Game Developer</option>
-                              <option value="SalesAssociate(Telecaller)">Sales Associate (Telecaller)</option>
-                              <option value="SalesTeamLead">Sales Team Lead</option>
-                              <option value="SalesManager">Sales Manager</option>
-                              <option value="IonicDeveloper">Ionic Developer</option>
-                              <option value="SeniorReactNativeDeveloper">Senior React Native Developer</option>
-                              <option value="DigitalMarketingAssistant">Digital Marketing Assistant</option>
-                              <option value="GraphicDesigner">Graphic Designer</option>
-                              <option value="DevOps">DevOps</option>
-                              <option value="QualityAssurance">Quality Assurance</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
-                          <div class="col-sm-10">
-                            <input type="number" class="form-control" name="experience" value="">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="inputText" class="col-sm-2 col-form-label">CV</label>
-                          <div class="col-sm-10">
-                            <input class="form-control" type="file" name="cv" id="formFile">
-                          </div>
-                        </div>
-                        <div class="row mb-3">
-                          <label for="statusDropdown" class="col-sm-2 col-form-label">Status</label>
-                          <div class="col-sm-10">
-                            <select class="form-select" id="statusDropdown" name="status">
-                              <option value="pending" selected>Pending</option>
-                              <option value="approved">Approved</option>
-                              <option value="rejected">Rejected</option>
-                            </select>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Create Modal-->
-
               <!-- Update Modal -->
               <div class="modal fade" id="updateModal{{ application.id }}" tabindex="-1"
                 aria-labelledby="updateModalLabel{{ application.id }}" aria-hidden="true">
@@ -987,6 +906,87 @@
         </div>
       </div>
     </div>
+
+    <!-- Create Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create Job Application</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="CreateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="name" value="">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control" name="mail" value="">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Contact Number</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" name="contactnumber" value="">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="category" class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="category">
+                    <option value="" disabled selected>Select Category</option>
+                    <option value="SeniorFullStack5PlusYears">Senior Full Stack- 5+ Years</option>
+                    <option value="SeniorUnityGameDeveloper">Senior Unity Game Developer</option>
+                    <option value="GameDesigner">Game Designer</option>
+                    <option value="BackendGameDeveloper">Backend Game Developer</option>
+                    <option value="SalesAssociate(Telecaller)">Sales Associate (Telecaller)</option>
+                    <option value="SalesTeamLead">Sales Team Lead</option>
+                    <option value="SalesManager">Sales Manager</option>
+                    <option value="IonicDeveloper">Ionic Developer</option>
+                    <option value="SeniorReactNativeDeveloper">Senior React Native Developer</option>
+                    <option value="DigitalMarketingAssistant">Digital Marketing Assistant</option>
+                    <option value="GraphicDesigner">Graphic Designer</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="QualityAssurance">Quality Assurance</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Experience</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" name="experience" value="">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">CV</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" name="cv" id="formFile">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="statusDropdown" class="col-sm-2 col-form-label">Status</label>
+                <div class="col-sm-10">
+                  <select class="form-select" id="statusDropdown" name="status">
+                    <option value="pending" selected>Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Create Modal-->
 
   </main><!-- End #main -->
 
