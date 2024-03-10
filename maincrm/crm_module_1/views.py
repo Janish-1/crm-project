@@ -5,10 +5,13 @@ from django.core.exceptions import ObjectDoesNotExist
 # Importing Models
 from test_for_users.models import Careers
 from .models import *
+from .serializers import JobPostSerializer
 # Rest Framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status,serializers
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 def search_view(request):
     return render(request, 'your_template.php', {})
@@ -154,36 +157,37 @@ def recruitment_jobs_posted_view(request):
     job_posts = JobPost.objects.all()
     return render(request, 'recruitments/job_posted.php', {'job_posts': job_posts})
 
-def job_post_detail(request, job_post_id):
-    job_post = get_object_or_404(JobPost, pk=job_post_id)
-    return render(request, 'recruitments/job_post_detail.php', {'job_post': job_post})
+class JobPostAPIView(APIView):
+    def get(self, request, job_post_id=None):
+        if job_post_id:
+            job_post = get_object_or_404(JobPost, pk=job_post_id)
+            serializer = JobPostSerializer(job_post)
+            return Response(serializer.data)
+        else:
+            job_posts = JobPost.objects.all()
+            serializer = JobPostSerializer(job_posts, many=True)
+            return Response(serializer.data)
 
-def create_job_post(request):
-    if request.method == 'POST':
-        form = JobPostForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('recruitment-jobsposted')
-    else:
-        form = JobPostForm()
-    return render(request, 'recruitments/job_post_form.php', {'form': form})
+    def post(self, request):
+        serializer = JobPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': True, 'job_post': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def update_job_post(request, job_post_id):
-    job_post = get_object_or_404(JobPost, pk=job_post_id)
-    if request.method == 'POST':
-        form = JobPostForm(request.POST, instance=job_post)
-        if form.is_valid():
-            form.save()
-            return redirect('recruitment-jobsposted')
-    else:
-        form = JobPostForm(instance=job_post)
-    return render(request, 'recruitments/job_post_form.php', {'form': form})
+    def put(self, request, job_post_id):
+        job_post = get_object_or_404(JobPost, pk=job_post_id)
+        serializer = JobPostSerializer(job_post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': True, 'job_post': serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def delete_job_post(request, job_post_id):
-    job_post = get_object_or_404(JobPost, pk=job_post_id)
-    job_post.delete()
-    return redirect('recruitment-jobsposted')
-    
+    def delete(self, request, job_post_id):
+        job_post = get_object_or_404(JobPost, pk=job_post_id)
+        job_post.delete()
+        return Response({'success': True, 'job_post': serializer.data},status=status.HTTP_204_NO_CONTENT)    
+
 def job_application(request):
     # Retrieve all job applications
     job_applications = Careers.objects.all()

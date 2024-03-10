@@ -1,21 +1,29 @@
+# Django Imports
 from django.shortcuts import render,redirect,get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
+from django.core.files import File
+from django.urls import reverse
+
 # Importing viewsets from rest_framework
 from rest_framework import viewsets
+
 # Linking Serializers and Questions Models
 from .serializers import QuestionsSerializer
 from .models import Questions,Careers
+
 # Importing apiview and Response from rest framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
+# Some Random Libraries
 import random
+import secrets
+import os
 import string
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
-from django.core.files import File
 import logging
 import json
-from django.urls import reverse
 
 # Importing the SMTP Libraries
 import smtplib
@@ -55,6 +63,15 @@ def create_career(request):
         if field not in request.data:
             return Response({'success': False, 'message': f'{field} is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+    # Generate a 20-digit random alphanumeric string for the CV name
+    cv_name = secrets.token_hex(10)
+
+    # Extract file extension from the original CV file name
+    original_cv_name, original_cv_extension = os.path.splitext(request.data['cv'].name)
+
+    # Combine the generated name and original extension for the new CV name
+    cv_name_with_extension = f"{cv_name}{original_cv_extension}"
+        
     # Upload the CV file
     cv_path = request.data['cv'].name
     testid = random_strings(100)
@@ -88,7 +105,7 @@ def create_career(request):
 
     cv_file = request.data.get('cv')
     if cv_file:
-        career.cv.save(cv_file.name,File(cv_file))
+        career.cv.save(cv_name_with_extension,File(cv_file))
 
     # Save the Career model instance to the database
     career.save()
