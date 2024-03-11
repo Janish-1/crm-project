@@ -19,3 +19,20 @@ class JobPost(models.Model):
 
     def __str__(self):
         return f"{self.title} at {self.company} - {self.platform}"
+
+class TimeHistory(models.Model):
+    date = models.DateField()
+    name = models.TextField()
+    clockin = models.TimeField()
+    clockout = models.TimeField(default=False)
+    description = models.TextField()
+    attendence = models.BooleanField(default=False)
+    late = models.BooleanField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} at {self.date} - {self.attendence}"
+
+    class Meta:
+        abstract = True

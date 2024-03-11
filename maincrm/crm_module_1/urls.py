@@ -1,7 +1,7 @@
 # Imported django path
 from django.urls import path
 # Imported all views 
-from .views import JobPostAPIView
+from .views import JobPostAPIView,TimeHistoryAPIView
 from . import views
 # Importing static
 from django.conf.urls.static import static
@@ -25,6 +25,8 @@ urlpatterns = [
     path('customer-add/', views.add_customer_view, name='customer-add'),
     path('customer-list/', views.list_customers_view, name='customer-list'),
     path('customer-group/', views.group_customers_view, name='customer-group'),
+    
+    # Transactions URLs
     path('transactions/', views.transactions_view, name='transactions'),
     path('transactions-newdeposit/', views.new_deposit_view, name='transactions-newdeposit'),
     path('transactions-newexpense/', views.new_expense_view, name='transactions-newexpense'),
@@ -63,8 +65,10 @@ urlpatterns = [
     path('attendence-timehistory/', views.attendence_time_history_view, name='attendence-timehistory'),
     path('attendence-timechangerequest/', views.attendence_time_change_request_view, name='attendence-timechangerequest'),
     path('attendence-attendencereport/', views.attendence_attendence_report_view, name='attendence-attendencereport'),
+    path('timehistories/', TimeHistoryAPIView.as_view(), name='time_history_list'),
+    path('timehistories/<int:time_history_id>/', TimeHistoryAPIView.as_view(), name='time_history_detail'),
 
-    # Recruitment URLs
+    # Recruitment URLs - Done
     path('recruitment-jobsposted/', views.recruitment_jobs_posted_view, name='recruitment-jobsposted'),
     path('jobposts/', JobPostAPIView.as_view(), name='jobpost-detail-view'),    
     path('jobposts/<int:job_post_id>/', JobPostAPIView.as_view(), name='jobpost-detail'),    

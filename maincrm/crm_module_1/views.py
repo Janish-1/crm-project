@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 # Importing Models
 from test_for_users.models import Careers
-from .models import *
-from .serializers import JobPostSerializer
+from .models import TimeHistory,JobPost
+from .serializers import JobPostSerializer,TimeHistorySerializer
 # Rest Framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -144,13 +144,47 @@ def report_income_expense_comparison_view(request):
 
 # Attendance Views
 def attendence_time_history_view(request):
-    return render(request, 'attendance/attendence_time_history_view.php', {})
+    time_histories = TimeHistory.objects.all()
+    return render(request, 'Attendence/time_history.php', {'time_histories':time_histories})
 
 def attendence_time_change_request_view(request):
-    return render(request, 'attendance/attendence_time_change_request_view.php', {})
+    time_histories = TimeHistory.objects.all()
+    return render(request, 'Attendence/time_change_request.php', {'time_histories':time_histories})
 
-def attendence_attendence_report_view(request):
-    return render(request, 'attendance/attendence_attendence_report_view.php', {})
+def attendence_attendence_report_view(request):    
+    time_histories = TimeHistory.objects.all()
+    return render(request, 'Attendence/attendence_report.php', {'time_histories':time_histories})
+
+class TimeHistoryAPIView(APIView):
+    def get(self, request, time_history_id=None):
+        if time_history_id:
+            time_history = get_object_or_404(TimeHistory, pk=time_history_id)
+            serializer = TimeHistorySerializer(time_history)
+            return Response(serializer.data)
+        else:
+            time_histories = TimeHistory.objects.all()
+            serializer = TimeHistorySerializer(time_histories, many=True)
+            return Response(serializer.data)
+
+    def post(self, request):
+        serializer = TimeHistorySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': True, 'time_history': serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, time_history_id):
+        time_history = get_object_or_404(TimeHistory, pk=time_history_id)
+        serializer = TimeHistorySerializer(time_history, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': True, 'time_history': serializer.data})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, time_history_id):
+        time_history = get_object_or_404(TimeHistory, pk=time_history_id)
+        time_history.delete()
+        return Response({'success': True, 'time_history': serializer.data}, status=status.HTTP_204_NO_CONTENT)
 
 # Recruitment Views
 def recruitment_jobs_posted_view(request):
