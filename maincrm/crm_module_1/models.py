@@ -24,15 +24,15 @@ class TimeHistory(models.Model):
     date = models.DateField()
     name = models.TextField()
     clockin = models.TimeField()
-    clockout = models.TimeField(default=False)
-    description = models.TextField()
-    attendence = models.BooleanField(default=False)
-    late = models.BooleanField()
+    clockout = models.TimeField(null=True)
+    description = models.TextField(null=True)
+    attendence = models.BooleanField(default=True)
+    late = models.BooleanField(default=False)
+    time_change_request = models.TextField(default="Pending",choices=[("Pending","Pending"),("Approved","Approved"),("Rejected","Rejected")])
+    time_change_message = models.TextField(null=True)
+    status = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.name} at {self.date} - {self.attendence}"
-
-    class Meta:
-        abstract = True

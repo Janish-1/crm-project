@@ -148,12 +148,14 @@ def attendence_time_history_view(request):
     return render(request, 'Attendence/time_history.php', {'time_histories':time_histories})
 
 def attendence_time_change_request_view(request):
-    time_histories = TimeHistory.objects.all()
-    return render(request, 'Attendence/time_change_request.php', {'time_histories':time_histories})
+    time_histories = TimeHistory.objects.filter(status=2)
+    all_names = TimeHistory.objects.values_list("name",flat=True).distinct()
+    return render(request, 'Attendence/time_change_request.php', {'time_histories':time_histories,'all_names':all_names})
 
 def attendence_attendence_report_view(request):    
     time_histories = TimeHistory.objects.all()
-    return render(request, 'Attendence/attendence_report.php', {'time_histories':time_histories})
+    all_names = TimeHistory.objects.values_list("name",flat=True).distinct()
+    return render(request, 'Attendence/attendence_report.php', {'time_histories':time_histories,'all_names':all_names})
 
 class TimeHistoryAPIView(APIView):
     def get(self, request, time_history_id=None):
@@ -180,6 +182,20 @@ class TimeHistoryAPIView(APIView):
             serializer.save()
             return Response({'success': True, 'time_history': serializer.data})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request):
+        name = request.data.get('name')
+        date = request.data.get('date')
+        time_history = TimeHistory.objects.filter(name=name, date=date).first()
+        
+        if time_history:
+            serializer = TimeHistorySerializer(time_history, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save(status=2)  # Update status to 2
+                return Response({'success': True, 'time_history': serializer.data})
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'error': 'Attendance not found.'}, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, time_history_id):
         time_history = get_object_or_404(TimeHistory, pk=time_history_id)

@@ -490,7 +490,7 @@
                 </ul>
             </li><!-- End Charts Nav -->
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#attendence-nav" data-bs-toggle="collapse" href="">
+                <a class="nav-link" data-bs-target="#attendence-nav" data-bs-toggle="collapse" href="">
                     <i class="bi bi-bar-chart"></i><span>Attendence</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="attendence-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
@@ -512,7 +512,7 @@
                 </ul>
             </li><!-- End Charts Nav -->
             <li class="nav-item">
-                <a class="nav-link" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="">
+                <a class="nav-link collapsed" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="">
                     <i class="bi bi-bar-chart"></i><span>Recruitment</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="recruitment-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -736,10 +736,10 @@
                                 <th scope="col">Clock In</th>
                                 <th scope="col">Clock Out</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Attendance</th>
+                                <!-- <th scope="col">Attendance</th>
                                 <th scope="col">Late</th>
                                 <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
+                                <th scope="col">Updated At</th> -->
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -752,10 +752,10 @@
                                 <td>{{ timehistory.clockin }}</td>
                                 <td>{{ timehistory.clockout }}</td>
                                 <td>{{ timehistory.description }}</td>
-                                <td>{{ timehistory.attendance }}</td>
+                                <!-- <td>{{ timehistory.attendance }}</td>
                                 <td>{{ timehistory.late }}</td>
                                 <td>{{ timehistory.created_at }}</td>
-                                <td>{{ timehistory.updated_at }}</td>
+                                <td>{{ timehistory.updated_at }}</td> -->
                                 <td>
                                     <!-- Action Dropdown -->
                                     <div class="dropdown">
@@ -823,23 +823,29 @@
                                                     </div>
                                                 </div>
 
+                                                <!-- Attendance Field -->
                                                 <div class="row mb-3">
                                                     <label for="inputAttendance"
                                                         class="col-sm-2 col-form-label">Attendance</label>
                                                     <div class="col-sm-10">
-                                                        <input type="checkbox" class="form-check-input"
-                                                            name="attendance" {% if timehistory.attendance %}checked{%
-                                                            endif %}>
+                                                        <select class="form-select" name="attendence">
+                                                            <option value="true">Present</option>
+                                                            <option value="false">Absent</option>
+                                                        </select>
                                                     </div>
                                                 </div>
 
+                                                <!-- Late Field -->
                                                 <div class="row mb-3">
                                                     <label for="inputLate" class="col-sm-2 col-form-label">Late</label>
                                                     <div class="col-sm-10">
-                                                        <input type="checkbox" class="form-check-input" name="late" {%
-                                                            if timehistory.late %}checked{% endif %}>
+                                                        <select class="form-select" name="late">
+                                                            <option value="true">Yes</option>
+                                                            <option value="false">No</option>
+                                                        </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="row mb-3">
                                                     <label for="inputDescription"
                                                         class="col-sm-2 col-form-label">Description</label>
@@ -900,10 +906,8 @@
                                             <p><strong>Name:</strong> {{ timehistory.name }}</p>
                                             <p><strong>Clock In:</strong> {{ timehistory.clockin }}</p>
                                             <p><strong>Clock Out:</strong> {{ timehistory.clockout }}</p>
-                                            <p><strong>Attendance:</strong> {% if timehistory.attendance %}Present{%
-                                                else %}Absent{% endif %}</p>
-                                            <p><strong>Late:</strong> {% if timehistory.late %}Yes{% else %}No{% endif
-                                                %}</p>
+                                            <p><strong>Attendance:</strong> {{ timehistory.attendence }}</p>
+                                            <p><strong>Late:</strong> {{ timehistory.late }}</p>
                                             <p><strong>Description:</strong> {{ timehistory.description }}</p>
                                             <p><strong>Created At:</strong> {{ timehistory.created_at }}</p>
                                             <p><strong>Updated At:</strong> {{ timehistory.updated_at }}</p>
@@ -969,7 +973,7 @@
                             <div class="row mb-3">
                                 <label for="inputAttendance" class="col-sm-2 col-form-label">Attendance</label>
                                 <div class="col-sm-10">
-                                    <input type="checkbox" class="form-check-input" name="attendance" value="on">
+                                    <input type="checkbox" class="form-check-input" name="attendence" value="on">
                                 </div>
                             </div>
 
@@ -1033,7 +1037,7 @@
         function confirmCreate() {
             var formData = new FormData(document.getElementById('CreateForm'));
 
-            fetch("/api/jobposts/", {
+            fetch("/api/timehistories/", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1050,7 +1054,7 @@
                     console.log(response);
 
                     if (response.success) {
-                        console.log('Job Post Created Successfully', response.job_post);
+                        console.log('TimeHistory Created Successfully', response.time_history);
                         window.location.reload();
                     } else {
                         alert("Error: " + (response.message ? response.message : "Unknown error"));
@@ -1062,22 +1066,13 @@
                 });
         }
 
-        function confirmUpdate(jobPostId) {
-            // Get form data
+        function confirmUpdate(timeHistoryId) {
             var formData = new FormData(document.getElementById('updateForm'));
 
-            // Convert FormData to a plain object
-            var inputData = {};
-            formData.forEach((value, key) => {
-                inputData[key] = value;
-            });
-
-            // Use Fetch API to submit the form data as a PUT request
-            fetch('/api/jobposts/' + jobPostId + '/', {
+            fetch('/api/timehistories/' + timeHistoryId + '/', {
                 method: 'PUT',
-                body: JSON.stringify(inputData),
+                body: formData,
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken'),
                 },
             })
@@ -1088,20 +1083,19 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Job Post Updated Successfully', data);
+                    console.log('TimeHistory Updated Successfully', data);
                     window.location.reload();
                 })
                 .catch(error => {
-                    console.error('Error updating job post:', error);
-                    alert('Error updating job post. Please try again.');
+                    console.error('Error updating TimeHistory:', error);
+                    alert('Error updating TimeHistory. Please try again.');
                 });
         }
 
-        function confirmDelete(jobPostId) {
-            fetch('/api/jobposts/' + jobPostId + '/', {
+        function confirmDelete(timeHistoryId) {
+            fetch('/api/timehistories/' + timeHistoryId + '/', {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken'),
                 },
             })
@@ -1112,12 +1106,12 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Job Post Deleted Successfully:', data);
+                    console.log('TimeHistory Deleted Successfully:', data);
                     window.location.reload();
                 })
                 .catch(error => {
-                    console.error('Error deleting job post:', error);
-                    alert('Error deleting job post. Please try again.');
+                    console.error('Error deleting TimeHistory:', error);
+                    alert('Error deleting TimeHistory. Please try again.');
                 });
         }
 
