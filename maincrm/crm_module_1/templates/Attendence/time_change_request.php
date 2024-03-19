@@ -466,7 +466,7 @@
                 <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="">
                     <i class="bi bi-bar-chart"></i><span>Report</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="report-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{% url 'report-projectreport' %}">
                             <i class="bi bi-circle"></i><span>Project Report</span>
@@ -628,34 +628,6 @@
             <li class="nav-heading">Pages</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'companies' %}">
-                    <i class="bi bi-person"></i>
-                    <span>Companies</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'faq' %}">
-                    <i class="bi bi-question-circle"></i>
-                    <span>Public Holiday</span>
-                </a>
-            </li><!-- End F.A.Q Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'user' %}">
-                    <i class="bi bi-envelope"></i>
-                    <span>User</span>
-                </a>
-            </li><!-- End Contact Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'items' %}">
-                    <i class="bi bi-card-list"></i>
-                    <span>Items</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-
-            <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'departments' %}">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>Departments</span>
@@ -675,24 +647,21 @@
                     <span>Training</span>
                 </a>
             </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'calendar' %}">
                     <i class="bi bi-file-earmark"></i>
                     <span>Calendar</span>
                 </a>
             </li><!-- End Blank Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'noticeboard' %}">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Notice Board</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'message' %}">
                     <i class="bi bi-file-earmark"></i>
                     <span>Message</span>
                 </a>
             </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'notes' %}">
                     <i class="bi bi-file-earmark"></i>

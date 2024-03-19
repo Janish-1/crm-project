@@ -36,3 +36,58 @@ class TimeHistory(models.Model):
 
     def __str__(self):
         return f"{self.name} at {self.date} - {self.attendence}"
+
+class ProjectReport(models.Model):
+    project_name = models.CharField(max_length=100)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    project_manager = models.CharField(max_length=100)
+    project_description = models.TextField()
+    budget_allocated = models.DecimalField(max_digits=10, decimal_places=2)
+    actual_cost = models.DecimalField(max_digits=10, decimal_places=2)
+    progress_percentage = models.PositiveIntegerField(default=0, help_text="Progress in percentage")
+    issues = models.TextField(blank=True, null=True)
+    accomplishments = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.project_name
+
+class ClientReport(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20)
+    company = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    postal_code = models.CharField(max_length=20)
+    total_payments = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_changes_requested = models.IntegerField(default=0)
+    project_notes = models.TextField(blank=True)
+    project_requirements = models.TextField()
+    project_status = models.CharField(max_length=50, choices=[('Pending', 'Pending'), ('Ongoing', 'Ongoing'), ('Completed', 'Completed')], default='Pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+class ExpenseReport(models.Model):
+    description = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateField()
+    expense_type = models.CharField(max_length=100, choices=[
+        ('Travel', 'Travel'),
+        ('Supplies', 'Supplies'),
+        ('Equipment', 'Equipment'),
+        ('Services', 'Services'),
+        ('Other', 'Other')
+    ])
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.description} - {self.amount}"
+    

@@ -17,7 +17,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Jobs Posted</title>
+    <title>Client Report</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -463,10 +463,10 @@
             </li><!-- End Icons Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#report-nav" data-bs-toggle="collapse" href="">
+                <a class="nav-link" data-bs-target="#report-nav" data-bs-toggle="collapse" href="">
                     <i class="bi bi-bar-chart"></i><span>Report</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="report-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="report-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{% url 'report-projectreport' %}">
                             <i class="bi bi-circle"></i><span>Project Report</span>
@@ -512,10 +512,10 @@
                 </ul>
             </li><!-- End Charts Nav -->
             <li class="nav-item">
-                <a class="nav-link" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="">
+                <a class="nav-link collapsed" data-bs-target="#recruitment-nav" data-bs-toggle="collapse" href="">
                     <i class="bi bi-bar-chart"></i><span>Recruitment</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="recruitment-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <ul id="recruitment-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{% url 'recruitment-jobsposted' %}">
                             <i class="bi bi-circle"></i><span>Jobs Posted</span>
@@ -675,17 +675,17 @@
     <main id="main" class="main">
 
         <div class="pagetitle">
-            <h1>Jobs Posted</h1>
+            <h1>Client Report</h1>
             <nav class="row">
                 <div class="col-lg">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active">Jobs Posted</li>
+                        <li class="breadcrumb-item active">Client Report</li>
                     </ol>
                 </div>
                 <div class="col-sm text-end">
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                        Create Job Post
+                        Create Client Report
                     </button>
                 </div>
             </nav>
@@ -693,36 +693,44 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">All Job Posted</h5>
+                <h5 class="card-title">Client Reports</h5>
                 <div class="table-responsive">
                     <!-- Table with hoverable rows -->
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Title</th>
-                                <th scope="col">Company</th>
-                                <th scope="col">Location</th>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Project Manager</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Requirements</th>
-                                <th scope="col">Salary</th>
-                                <th scope="col">Posted At</th>
-                                <th scope="col">Platform</th>
+                                <th scope="col">Budget Allocated</th>
+                                <th scope="col">Actual Cost</th>
+                                <th scope="col">Progress Percentage</th>
+                                <th scope="col">Issues</th>
+                                <th scope="col">Accomplishments</th>
+                                <th scope="col">Created At</th>
+                                <th scope="col">Updated At</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for job_posting in job_posts %}
+                            {% for data in alldata %}
                             <tr>
-                                <th scope="row">{{ job_posting.id }}</th>
-                                <td>{{ job_posting.title }}</td>
-                                <td>{{ job_posting.company }}</td>
-                                <td>{{ job_posting.location }}</td>
-                                <td>{{ job_posting.description }}</td>
-                                <td>{{ job_posting.requirements }}</td>
-                                <td>{{ job_posting.salary }}</td>
-                                <td>{{ job_posting.posted_at }}</td>
-                                <td>{{ job_posting.platform }}</td>
+                                <th scope="row">{{ data.id }}</th>
+                                <td>{{ data.project_name }}</td>
+                                <td>{{ data.start_date }}</td>
+                                <td>{{ data.end_date }}</td>
+                                <td>{{ data.project_manager }}</td>
+                                <td>{{ data.project_description }}</td>
+                                <td>{{ data.budget_allocated }}</td>
+                                <td>{{ data.actual_cost }}</td>
+                                <td>{{ data.progress_percentage }}</td>
+                                <td>{{ data.issues }}</td>
+                                <td>{{ data.accomplishments }}</td>
+                                <td>{{ data.created_at }}</td>
+                                <td>{{ data.updated_at }}</td>
                                 <td>
                                     <!-- Action Dropdown -->
                                     <div class="dropdown">
@@ -732,11 +740,11 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="actionDropdown">
                                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#updateModal{{ job_posting.id }}">Update</a></li>
+                                                    data-bs-target="#updateModal{{ data.id }}">Update</a></li>
                                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ job_posting.id }}">Delete</a></li>
+                                                    data-bs-target="#deleteModal{{ data.id }}">Delete</a></li>
                                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#readModal{{ job_posting.id }}">Read</a></li>
+                                                    data-bs-target="#readModal{{ data.id }}">Read</a></li>
                                         </ul>
                                     </div>
                                     <!-- End Action Dropdown -->
@@ -744,8 +752,8 @@
                             </tr>
 
                             <!-- Update Modal -->
-                            <div class="modal fade" id="updateModal{{ job_posting.id }}" tabindex="-1"
-                                aria-labelledby="updateModalLabel{{ job_posting.id }}" aria-hidden="true">
+                            <div class="modal fade" id="updateModal{{ data.id }}" tabindex="-1"
+                                aria-labelledby="updateModalLabel{{ data.id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -757,97 +765,101 @@
                                             <form id="updateForm" method="PUT"
                                                 action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                                 <div class="row mb-3">
-                                                    <label for="inputTitle"
-                                                        class="col-sm-2 col-form-label">Title</label>
+                                                    <label for="inputProjectName"
+                                                        class="col-sm-2 col-form-label">Project Name</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="title"
-                                                            value="{{ job_posting.title }}">
+                                                        <input type="text" class="form-control" name="project_name"
+                                                            value="{{ data.project_name }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputCompany"
-                                                        class="col-sm-2 col-form-label">Company</label>
+                                                    <label for="inputStartDate" class="col-sm-2 col-form-label">Start
+                                                        Date</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="company"
-                                                            value="{{ job_posting.company }}">
+                                                        <input type="date" class="form-control" name="start_date"
+                                                            value="{{ data.start_date }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputLocation"
-                                                        class="col-sm-2 col-form-label">Location</label>
+                                                    <label for="inputEndDate" class="col-sm-2 col-form-label">End
+                                                        Date</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="location"
-                                                            value="{{ job_posting.location }}">
+                                                        <input type="date" class="form-control" name="end_date"
+                                                            value="{{ data.end_date }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputDescription"
-                                                        class="col-sm-2 col-form-label">Description</label>
+                                                    <label for="inputProjectManager"
+                                                        class="col-sm-2 col-form-label">Project Manager</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control" name="description"
-                                                            rows="4">{{ job_posting.description }}</textarea>
+                                                        <input type="text" class="form-control" name="project_manager"
+                                                            value="{{ data.project_manager }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputRequirements"
-                                                        class="col-sm-2 col-form-label">Requirements</label>
+                                                    <label for="inputProjectDescription"
+                                                        class="col-sm-2 col-form-label">Project Description</label>
                                                     <div class="col-sm-10">
-                                                        <textarea class="form-control" name="requirements"
-                                                            rows="4">{{ job_posting.requirements }}</textarea>
+                                                        <textarea class="form-control" name="project_description"
+                                                            rows="4">{{ data.project_description }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputSalary"
-                                                        class="col-sm-2 col-form-label">Salary</label>
+                                                    <label for="inputBudgetAllocated"
+                                                        class="col-sm-2 col-form-label">Budget Allocated</label>
                                                     <div class="col-sm-10">
-                                                        <input type="number" class="form-control" name="salary"
-                                                            value="{{ job_posting.salary }}">
+                                                        <input type="number" class="form-control"
+                                                            name="budget_allocated" value="{{ data.budget_allocated }}">
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="inputPlatform"
-                                                        class="col-sm-2 col-form-label">Platform</label>
+                                                    <label for="inputActualCost" class="col-sm-2 col-form-label">Actual
+                                                        Cost</label>
                                                     <div class="col-sm-10">
-                                                        <select class="form-select" name="platform">
-                                                            <option value="LinkedIn">
-                                                                LinkedIn
-                                                            </option>
-                                                            <option value="Indeed">
-                                                                Indeed
-                                                            </option>
-                                                            <option value="Monster">
-                                                                Monster
-                                                            </option>
-                                                            <option value="Other">Other
-                                                            </option>
-                                                        </select>
+                                                        <input type="number" class="form-control" name="actual_cost"
+                                                            value="{{ data.actual_cost }}">
                                                     </div>
                                                 </div>
-                                                <!-- Add other fields as needed -->
                                                 <div class="row mb-3">
-                                                    <label for="inputPostedAt" class="col-sm-2 col-form-label">Posted
-                                                        At</label>
+                                                    <label for="inputProgressPercentage"
+                                                        class="col-sm-2 col-form-label">Progress Percentage</label>
                                                     <div class="col-sm-10">
-                                                        <input type="text" class="form-control" name="posted_at"
-                                                            value="{{ job_posting.posted_at }}" readonly>
+                                                        <input type="number" class="form-control"
+                                                            name="progress_percentage"
+                                                            value="{{ data.progress_percentage }}">
                                                     </div>
                                                 </div>
-
+                                                <div class="row mb-3">
+                                                    <label for="inputIssues"
+                                                        class="col-sm-2 col-form-label">Issues</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control" name="issues"
+                                                            rows="4">{{ data.issues }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label for="inputAccomplishments"
+                                                        class="col-sm-2 col-form-label">Accomplishments</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea class="form-control" name="accomplishments"
+                                                            rows="4">{{ data.accomplishments }}</textarea>
+                                                    </div>
+                                                </div>
                                             </form><!-- End Update Form -->
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary"
-                                                onclick="confirmUpdate({{ job_posting.id }})">Submit</button>
+                                                onclick="confirmUpdate({{ data.id }})">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal{{ job_posting.id }}" tabindex="-1"
-                                aria-labelledby="deleteModalLabel{{ job_posting.id }}" aria-hidden="true">
+                            <div class="modal fade" id="deleteModal{{ data.id }}" tabindex="-1"
+                                aria-labelledby="deleteModalLabel{{ data.id }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -862,7 +874,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
                                             <button type="button" class="btn btn-primary"
-                                                onclick="confirmDelete({{ job_posting.id }})">Confirm</button>
+                                                onclick="confirmDelete({{ data.id }})">Confirm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -870,26 +882,26 @@
                             <!-- End Delete Modal -->
 
                             <!-- Read Modal -->
-                            <div class="modal fade" id="readModal{{ job_posting.id }}" tabindex="-1"
-                                aria-labelledby="readModalLabel{{ job_posting.id }}" aria-hidden="true">
+                            <div class="modal fade" id="readModal{{ data.id }}" tabindex="-1"
+                                aria-labelledby="readModalLabel{{ data.id }}" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Details about {{ job_posting.title }} at {{
-                                                job_posting.company }}</h5>
+                                            <h5 class="modal-title">Details about {{ data.project_name }}</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p><strong>Title:</strong> {{ job_posting.title }}</p>
-                                            <p><strong>Company:</strong> {{ job_posting.company }}</p>
-                                            <p><strong>Location:</strong> {{ job_posting.location }}</p>
-                                            <p><strong>Description:</strong> {{ job_posting.description }}</p>
-                                            <p><strong>Requirements:</strong> {{ job_posting.requirements }}</p>
-                                            <p><strong>Salary:</strong> {{ job_posting.salary }}</p>
-                                            <p><strong>Posted At:</strong> {{ job_posting.posted_at }}</p>
-                                            <p><strong>Platform:</strong> {{ job_posting.platform }}</p>
-                                            <!-- Add other fields as needed -->
+                                            <p><strong>Project Name:</strong> {{ data.project_name }}</p>
+                                            <p><strong>Start Date:</strong> {{ data.start_date }}</p>
+                                            <p><strong>End Date:</strong> {{ data.end_date }}</p>
+                                            <p><strong>Project Manager:</strong> {{ data.project_manager }}</p>
+                                            <p><strong>Description:</strong> {{ data.project_description }}</p>
+                                            <p><strong>Budget Allocated:</strong> {{ data.budget_allocated }}</p>
+                                            <p><strong>Actual Cost:</strong> {{ data.actual_cost }}</p>
+                                            <p><strong>Progress Percentage:</strong> {{ data.progress_percentage }}</p>
+                                            <p><strong>Issues:</strong> {{ data.issues }}</p>
+                                            <p><strong>Accomplishments:</strong> {{ data.accomplishments }}</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
@@ -917,50 +929,67 @@
                     <div class="modal-body">
                         <form id="CreateForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Title</label>
+                                <label for="inputProjectName" class="col-sm-2 col-form-label">Project Name</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="title" value="">
+                                    <input type="text" class="form-control" name="project_name" value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Company</label>
+                                <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="company" value="">
+                                    <input type="date" class="form-control" name="start_date" value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Location</label>
+                                <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="location" value="">
+                                    <input type="date" class="form-control" name="end_date" value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Description</label>
+                                <label for="inputProjectManager" class="col-sm-2 col-form-label">Project Manager</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" name="description" rows="4"></textarea>
+                                    <input type="text" class="form-control" name="project_manager" value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Requirements</label>
+                                <label for="inputProjectDescription" class="col-sm-2 col-form-label">Project
+                                    Description</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" name="requirements" rows="4"></textarea>
+                                    <textarea class="form-control" name="project_description" rows="4"></textarea>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputNumber" class="col-sm-2 col-form-label">Salary</label>
+                                <label for="inputBudgetAllocated" class="col-sm-2 col-form-label">Budget
+                                    Allocated</label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="salary" value="">
+                                    <input type="number" class="form-control" name="budget_allocated" value="">
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="inputText" class="col-sm-2 col-form-label">Platform</label>
+                                <label for="inputActualCost" class="col-sm-2 col-form-label">Actual Cost</label>
                                 <div class="col-sm-10">
-                                    <select class="form-select" name="platform">
-                                        <option value="LinkedIn">LinkedIn</option>
-                                        <option value="Indeed">Indeed</option>
-                                        <option value="Monster">Monster</option>
-                                        <option value="Other" selected>Other</option>
-                                    </select>
+                                    <input type="number" class="form-control" name="actual_cost" value="">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputProgressPercentage" class="col-sm-2 col-form-label">Progress
+                                    Percentage</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="progress_percentage" value="">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputIssues" class="col-sm-2 col-form-label">Issues</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="issues" rows="4"></textarea>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputAccomplishments"
+                                    class="col-sm-2 col-form-label">Accomplishments</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="accomplishments" rows="4"></textarea>
                                 </div>
                             </div>
                         </form>

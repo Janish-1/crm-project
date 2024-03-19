@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
 # Importing Models
 from test_for_users.models import Careers
 from .models import TimeHistory,JobPost
@@ -158,15 +159,32 @@ def attendence_attendence_report_view(request):
     return render(request, 'Attendence/attendence_report.php', {'time_histories':time_histories,'all_names':all_names})
 
 class TimeHistoryAPIView(APIView):
-    def get(self, request, time_history_id=None):
-        if time_history_id:
-            time_history = get_object_or_404(TimeHistory, pk=time_history_id)
-            serializer = TimeHistorySerializer(time_history)
-            return Response(serializer.data)
+    def get(self, request):
+        date = request.query_params.get('date')
+        name = request.query_params.get('name')
+
+        # Convert date string to datetime object
+        if date:
+            try:
+                date = datetime.strptime(date, '%Y-%m-%d').date()
+            except ValueError:
+                return Response({'error': 'Invalid date format. Use YYYY-MM-DD.'}, status=400)
+        
+        print(date,name)
+
+        # Filtering based on conditions
+        if date and name:
+            time_histories = TimeHistory.objects.filter(date=date, name=name)
+        elif date:
+            time_histories = TimeHistory.objects.filter(date=date)
+        elif name:
+            time_histories = TimeHistory.objects.filter(name=name)
         else:
-            time_histories = TimeHistory.objects.all()
-            serializer = TimeHistorySerializer(time_histories, many=True)
-            return Response(serializer.data)
+            return Response({'success':True},status=status.HTTP_204_NO_CONTENT)
+
+        serializer = TimeHistorySerializer(time_histories, many=True)
+
+        return Response({'success':True,'time_history':serializer.data},status=status.HTTP_201_CREATED)
 
     def post(self, request):
         serializer = TimeHistorySerializer(data=request.data)

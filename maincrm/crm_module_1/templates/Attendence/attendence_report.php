@@ -628,34 +628,6 @@
             <li class="nav-heading">Pages</li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'companies' %}">
-                    <i class="bi bi-person"></i>
-                    <span>Companies</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'faq' %}">
-                    <i class="bi bi-question-circle"></i>
-                    <span>Public Holiday</span>
-                </a>
-            </li><!-- End F.A.Q Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'user' %}">
-                    <i class="bi bi-envelope"></i>
-                    <span>User</span>
-                </a>
-            </li><!-- End Contact Page Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'items' %}">
-                    <i class="bi bi-card-list"></i>
-                    <span>Items</span>
-                </a>
-            </li><!-- End Register Page Nav -->
-
-            <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'departments' %}">
                     <i class="bi bi-box-arrow-in-right"></i>
                     <span>Departments</span>
@@ -675,24 +647,21 @@
                     <span>Training</span>
                 </a>
             </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'calendar' %}">
                     <i class="bi bi-file-earmark"></i>
                     <span>Calendar</span>
                 </a>
             </li><!-- End Blank Page Nav -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{% url 'noticeboard' %}">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Notice Board</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'message' %}">
                     <i class="bi bi-file-earmark"></i>
                     <span>Message</span>
                 </a>
             </li><!-- End Blank Page Nav -->
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{% url 'notes' %}">
                     <i class="bi bi-file-earmark"></i>
@@ -725,7 +694,7 @@
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Your Name</label>
                         <div class="col-sm-10">
-                            <select class="form-select" name="inputname">
+                            <select class="form-select" name="name">
                                 {% for name in all_names %}
                                 <option value="">Select Option</option>
                                 <option value="{{ name }}">{{ name }}</option>
@@ -736,7 +705,7 @@
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Date</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="inputDate">
+                            <input type="date" class="form-control" id="inputDate" name="date">
                         </div>
                     </div>
                     <div class="text-center">
@@ -745,23 +714,22 @@
                 </form><!-- End Horizontal Form -->
             </div>
         </div>
-        <!-- Modal to display details -->
-        <div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+        <div class="modal fade" id="basicModal" tabindex="-1">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="detailsModalLabel">Attendence Details</h5>
+                        <h5 class="modal-title">Attendence Report</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- Details will be displayed here -->
+                        Show Some Content
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- End Basic Modal-->
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
@@ -793,22 +761,47 @@
 
     <!-- Template Main JS File -->
     <script src="{% static 'assets/js/main.js' %}"></script>
+    <!-- Importing JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         // Function to handle form submission
         $('#attendenceForm').submit(function (e) {
             e.preventDefault(); // Prevent default form submission
 
             // Get form data
-            var formData = $(this).serialize();
+            var formData = $(this).serializeArray();
+            var name = formData.find(field => field.name === 'name').value;
+            var date = formData.find(field => field.name === 'date').value;
 
             // AJAX request to fetch details
-            $.ajax({
-                type: 'POST',
-                data: formData,
+            $.ajax(`/api/timehistories/?date=${date}&name=${name}`, {
+                type: 'GET',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
                 success: function (response) {
-                    // Display modal with fetched details
-                    $('#detailsModal .modal-body').html(response);
-                    $('#detailsModal').modal('show');
+                    // Check if response contains time_history and is not empty
+                    if (response && response.time_history && response.time_history.length > 0) {
+                        var data = response.time_history[0]; // Get the first object from time_history array
+                        // Format response data into HTML
+                        var htmlContent = `
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Date:</strong> ${data.date}</p>
+                        <p><strong>Clock In:</strong> ${data.clockin}</p>
+                        <p><strong>Clock Out:</strong> ${data.clockout}</p>
+                        <p><strong>Description:</strong> ${data.description}</p>
+                        <p><strong>Attendance:</strong> ${data.attendance ? 'Present' : 'Absent'}</p>
+                        <p><strong>Late:</strong> ${data.late ? 'Yes' : 'No'}</p>
+                        <p><strong>Time Change Request:</strong> ${data.time_change_request}</p>
+                        <p><strong>Time Change Message:</strong> ${data.time_change_message}</p>
+                    `;
+                        // Update modal content with fetched details
+                        $('#basicModal .modal-body').html(htmlContent);
+                        // Display modal with fetched details
+                        $('#basicModal').modal('show');
+                    } else {
+                        alert('No data found for the specified date and name.');
+                    }
                 },
                 error: function () {
                     alert('Error fetching details.');
