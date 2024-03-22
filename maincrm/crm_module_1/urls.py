@@ -60,8 +60,14 @@ urlpatterns = [
     path('report-clientreport/', views.report_client_report_view, name='report-clientreport'),
     path('report-expensereport/', views.report_expense_report_view, name='report-expensereport'),
     path('report-incomeexpensecomparison/', views.report_income_expense_comparison_view, name='report-incomeexpensecomparison'),
+    # path('project-reports/', views.ProjectReportListCreate.as_view(), name='project-report-list'),
+    # path('project-reports/<int:pk>/', views.ProjectReportRetrieveUpdateDestroy.as_view(), name='project-report-detail'),
+    # path('client-reports/', views.ClientReportListCreate.as_view(), name='client-report-list'),
+    # path('client-reports/<int:pk>/', views.ClientReportRetrieveUpdateDestroy.as_view(), name='client-report-detail'),
+    # path('expense-reports/', views.ExpenseReportListCreate.as_view(), name='expense-report-list'),
+    # path('expense-reports/<int:pk>/', views.ExpenseReportRetrieveUpdateDestroy.as_view(), name='expense-report-detail'),
 
-    # Attendance URLs
+    # Attendance URLs -Done
     path('attendence-timehistory/', views.attendence_time_history_view, name='attendence-timehistory'),
     path('attendence-timechangerequest/', views.attendence_time_change_request_view, name='attendence-timechangerequest'),
     path('attendence-attendencereport/', views.attendence_attendence_report_view, name='attendence-attendencereport'),
