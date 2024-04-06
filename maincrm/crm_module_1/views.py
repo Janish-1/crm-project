@@ -132,7 +132,8 @@ def accounting_expense_category_view(request):
 
 # Report Views
 def report_project_report_view(request):
-    return render(request, 'report/report_project_report_view.php', {})
+    alldata = ProjectReport.objects.all()
+    return render(request, 'report/report_project_report_view.php', {'alldata':alldata})
 
 def report_client_report_view(request):
     return render(request, 'report/report_client_report_view.php', {})
@@ -146,30 +147,30 @@ def report_income_expense_comparison_view(request):
 class ProjectReportAPIView(APIView):
     def get(self,request):
         data = ProjectReport.objects.all()
-        return Response({'success':True,'data':data},status= HTTP_200_CREATED)
+        return Response({'success':True,'data':data},status= status.HTTP_201_CREATED)
 
     def post(self,request):
         serializers = ProjectReportSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response({'success':True},status=HTTP_201_CREATED)
-        return Response({'success':False},status=HTTP_400_BAD_REQUEST)
+            return Response({'success':True},status=status.HTTP_201_CREATED)
+        return Response({'success':False},status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self,request,project_id):
-        ProjectReport = get_object_or_404(ProjectReport, pk=project_id)
+    def put(self,request,projectid):
+        ProjectReport = get_object_or_404(ProjectReport, projectid=projectid)
         serializer = ProjectReportSerializer(ProjectReport, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'success': True, 'time_history': serializer.data},status=HTTP_201_CREATED)
+            return Response({'success': True, 'project_report': serializer.data},status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request,project_id):
+    def delete(self,request,projectid):
         try:
-            ProjectReport = get_object_or_404(ProjectReport,pk=project_id)
+            ProjectReport = get_object_or_404(ProjectReport,projectid=projectid)
             ProjectReport.delete()
-            return Response({'success':True},status=HTTP_200_CREATED)
+            return Response({'success':True},status=status.HTTP_201_CREATED)
         except:
-            return Response({'success':False},status=HTTP_400_BAD_REQUEST)
+            return Response({'success':False},status=status.HTTP_400_BAD_REQUEST)
 
 # Attendance Views
 def attendence_time_history_view(request):

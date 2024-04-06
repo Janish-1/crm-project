@@ -1037,7 +1037,7 @@
         function confirmCreate() {
             var formData = new FormData(document.getElementById('CreateForm'));
 
-            fetch("/api/jobposts/", {
+            fetch("/api/project-reports/", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -1054,7 +1054,7 @@
                     console.log(response);
 
                     if (response.success) {
-                        console.log('Job Post Created Successfully', response.job_post);
+                        console.log('Project Report Created Successfully', response.job_post);
                         window.location.reload();
                     } else {
                         alert("Error: " + (response.message ? response.message : "Unknown error"));
@@ -1066,7 +1066,7 @@
                 });
         }
 
-        function confirmUpdate(jobPostId) {
+        function confirmUpdate(projectid) {
             // Get form data
             var formData = new FormData(document.getElementById('updateForm'));
 
@@ -1077,7 +1077,7 @@
             });
 
             // Use Fetch API to submit the form data as a PUT request
-            fetch('/api/jobposts/' + jobPostId + '/', {
+            fetch('/api/project-reports/' + projectid + '/', {
                 method: 'PUT',
                 body: JSON.stringify(inputData),
                 headers: {
@@ -1101,8 +1101,8 @@
                 });
         }
 
-        function confirmDelete(jobPostId) {
-            fetch('/api/jobposts/' + jobPostId + '/', {
+        function confirmDelete(projectid) {
+            fetch('/api/project-reports/' + projectid + '/', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
