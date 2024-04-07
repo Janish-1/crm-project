@@ -283,7 +283,7 @@ class JobPostAPIView(APIView):
     def delete(self, request, job_post_id):
         job_post = get_object_or_404(JobPost, pk=job_post_id)
         job_post.delete()
-        return Response({'success': True, 'job_post': serializer.data},status=status.HTTP_204_NO_CONTENT)    
+        return Response({'success': True},status=status.HTTP_200_OK)    
 
 def job_application(request):
     # Retrieve all job applications
